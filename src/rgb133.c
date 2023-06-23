@@ -20,6 +20,7 @@
 /* PCI includes */
 #include <linux/pci.h>
 #include <linux/io.h>
+#include <linux/dma-mapping.h>
 
 /* Char dev headers */
 #include <linux/cdev.h>
@@ -1897,7 +1898,7 @@ ssize_t rgb133_write(struct file* file, const char __user* data, size_t count, l
             /* Map SG List */
             RGB133PRINT((RGB133_LINUX_DBG_TRACE, "rgb133_write: Map SG - pdev(0x%p) - SGList(0x%p) - page_count(%d)\n",
                pdev, kernel_dma->pSGList, kernel_dma->page_count));
-            kernel_dma->SG_length = pci_map_sg(pdev, kernel_dma->pSGList, kernel_dma->page_count, PCI_DMA_FROMDEVICE);
+            kernel_dma->SG_length = dma_map_sg(&pdev->dev, kernel_dma->pSGList, kernel_dma->page_count, DMA_FROM_DEVICE);
             RGB133PRINT((RGB133_LINUX_DBG_TRACE, "rgb133_write: Map SG - Length(%d)\n",
                   kernel_dma->SG_length));
 
@@ -3223,7 +3224,7 @@ static int DEVINIT rgb133_probe(struct pci_dev* pdev,
       return -EIO;
    }
 
-   if(pci_set_dma_mask(pdev, DMA_BIT_MASK(64)))
+   if(dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64)))
    {
       RGB133PRINT((RGB133_LINUX_DBG_ERROR, "rgb133_probe: No suitable DMA available\n"));
       RGB133PRINT((RGB133_LINUX_DBG_INOUT, "rgb133_probe: Set DMA Mask EIO END\n"));

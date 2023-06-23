@@ -17,6 +17,7 @@
 #include <linux/highmem.h>
 #include <linux/pagemap.h>
 #include <linux/pci.h>
+#include <linux/dma-mapping.h>
 
 #include "rgb133config.h"
 #include "rgb133.h"
@@ -124,7 +125,7 @@ void rgb133_kernel_dma_sync_for_device(struct pci_dev* pdev, struct scatterlist*
 {
    RGB133PRINT((RGB133_LINUX_DBG_DEBUG, "rgb133_kernel_dma_sync_for_device: sync DMA with pdev(0x%p), SGList(0x%p), page_count(%lu)\n",
       pdev, pSGList, page_count));
-   pci_dma_sync_sg_for_device(pdev, pSGList, page_count, PCI_DMA_FROMDEVICE);
+   dma_sync_sg_for_device(&pdev->dev, pSGList, page_count, DMA_FROM_DEVICE);
 }
 
 void rgb133_kernel_init_sg_entries(RGB133_KERNEL_DMA* kernel_dma, int entries)
