@@ -912,11 +912,12 @@ void dummy(void)
       $CC $CFLAGS -Werror -c conftest$$.c >> config.log 2>&1
       rm -f conftest$$.c
       
-      if [ -f conftest$$.o ] ; then
-        echo "#define RGB133_CONFIG_HAVE_VIDIOC_S_STD_FIX" >> conftest.h
-        rm -f conftest$$.o
-        return
-      fi
+      #if [ -f conftest$$.o ] ; then
+      #  echo "#define RGB133_CONFIG_HAVE_VIDIOC_S_STD_FIX" >> conftest.h
+      #  rm -f conftest$$.o
+      #  return
+      #fi
+      echo "#define RGB133_CONFIG_HAVE_VIDIOC_S_STD_FIX" >> conftest.h
     ;;
     const_s_crop)
       # Has the set cropping function had it's last parameter const'd
