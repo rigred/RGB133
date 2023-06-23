@@ -551,8 +551,6 @@ void dummy(void)
         rm -f conftest$$.o
         return
       fi
-      # hacky bypass of failing conftest check
-      #echo "#define RGB133_CONFIG_HAVE_VIDIOC_DEFAULT_EXT" >> conftest.h
       # Do we have the unsigned default ioctl handler?
       echo >> config.log
 
@@ -575,6 +573,8 @@ void dummy(void)
       echo "$CC $CFLAGS -Werror -c conftest$$.c" >> config.log
       $CC $CFLAGS -Werror -c conftest$$.c >> config.log 2>&1
       rm -f conftest$$.c
+
+      echo "Testing for RGB133_CONFIG_DEFAULT_IOCTL_UNSIGNED" 
       
       if [ -f conftest$$.o ] ; then
         # Having this unsigned handler also implies that we have the extended handler, 
@@ -584,6 +584,10 @@ void dummy(void)
         rm -f conftest$$.o
         return
       fi
+
+      # hacky bypass for failing conftest check thta is actually correct
+      echo "#define RGB133_CONFIG_HAVE_VIDIOC_DEFAULT_EXT
+#define RGB133_CONFIG_DEFAULT_IOCTL_UNSIGNED" >> conftest.h
 
     ;;
     v4l2_interlaced)
@@ -915,11 +919,12 @@ void dummy(void)
       $CC $CFLAGS -Werror -c conftest$$.c >> config.log 2>&1
       rm -f conftest$$.c
       
-      #if [ -f conftest$$.o ] ; then
-      #  echo "#define RGB133_CONFIG_HAVE_VIDIOC_S_STD_FIX" >> conftest.h
-      #  rm -f conftest$$.o
-      #  return
-      #fi
+      if [ -f conftest$$.o ] ; then
+        echo "#define RGB133_CONFIG_HAVE_VIDIOC_S_STD_FIX" >> conftest.h
+        rm -f conftest$$.o
+        return
+      fi
+      #hacky bypass for failing conftest 
       echo "#define RGB133_CONFIG_HAVE_VIDIOC_S_STD_FIX" >> conftest.h
     ;;
     const_s_crop)
