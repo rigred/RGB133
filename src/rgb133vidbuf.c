@@ -1045,13 +1045,13 @@ int __rgb133_buffer_mmap_mapper(struct rgb133_handle* h, struct vm_area_struct* 
    pd->count = 0;
    rgb133_set_mapped_buffer(h->buffers[offset], 1);
 
-   vma->vm_ops = &rgb133_buf_vm_ops;
+vma->vm_ops = &rgb133_buf_vm_ops;
 #ifdef RGB133_CONFIG_HAVE_VM_RESERVED
-   vma->vm_flags |= VM_DONTEXPAND | VM_RESERVED;
+   vm_flags_set(vma, VM_DONTEXPAND | VM_RESERVED);
 #else
-   vma->vm_flags |= VM_DONTEXPAND | VM_DONTDUMP;
+   vm_flags_set(vma, VM_DONTEXPAND | VM_DONTDUMP);
 #endif
-   vma->vm_flags &= ~VM_IO;
+   vm_flags_clear(vma, VM_IO);
    vma->vm_private_data = pd;
    retval = 0;
 
