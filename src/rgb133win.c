@@ -24,6 +24,7 @@
 #include <linux/timer.h>
 #include <linux/pagemap.h>
 #include <linux/pci.h>
+#include <linux/dma-mapping.h>
 
 #include "rgb133config.h"
 #include "rgb133.h"
@@ -1274,7 +1275,7 @@ NTSTATUS LinuxGetScatterGatherList(PDMA_ADAPTER DmaAdapter, PDEVICE_OBJECT Devic
    /* Map SG List */
    RGB133PRINT((RGB133_LINUX_DBG_TRACE, "LinuxGetScatterGatherList: Map SG - pdev(0x%p) - kernel_dma(0x%p) - SGList(0x%p) - page_count(%d)\n",
       pdev, kernel_dma, kernel_dma->pSGList, kernel_dma->page_count));
-   kernel_dma->SG_length = pci_map_sg(pdev, kernel_dma->pSGList, kernel_dma->page_count, PCI_DMA_FROMDEVICE);
+   kernel_dma->SG_length = dma_map_sg(&pdev->dev, kernel_dma->pSGList, kernel_dma->page_count, DMA_FROM_DEVICE);
    RGB133PRINT((RGB133_LINUX_DBG_TRACE, "LinuxGetScatterGatherList: Map SG - Length(%d) page_count(%d)\n",
          kernel_dma->SG_length, kernel_dma->page_count));
    sg_mark_end(kernel_dma->pSGList, kernel_dma->SG_Length);
@@ -1410,7 +1411,7 @@ NTSTATUS LinuxPutScatterGatherList(PDMA_ADAPTER DmaAdapter, PSCATTER_GATHER_LIST
    {
       RGB133PRINT((RGB133_LINUX_DBG_TRACE, "LinuxPutScatterGatherList: unmap DMA - SGList(0x%p)\n",
          (void*)kernel_dma->pSGList));
-      pci_unmap_sg(pdev, kernel_dma->pSGList, kernel_dma->page_count, PCI_DMA_FROMDEVICE);
+      dma_unmap_sg(&pdev->dev, kernel_dma->pSGList, kernel_dma->page_count, DMA_FROM_DEVICE);
    }
    else
    {
