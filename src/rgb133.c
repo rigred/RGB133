@@ -3224,7 +3224,7 @@ static int DEVINIT rgb133_probe(struct pci_dev* pdev,
       return -EIO;
    }
 
-   if(dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64)))
+   if(dma_set_mask(&pdev->dev, DMA_BIT_MASK(64)))
    {
       RGB133PRINT((RGB133_LINUX_DBG_ERROR, "rgb133_probe: No suitable DMA available\n"));
       RGB133PRINT((RGB133_LINUX_DBG_INOUT, "rgb133_probe: Set DMA Mask EIO END\n"));
