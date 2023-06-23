@@ -69,13 +69,16 @@ int SndCardBuild(PRGB133DEVAPI _dev, int index, const char* id, PMODULEAPI _modu
 
 int SndCardFree(void* card)
 {
-   if(!card)
+   if (!card)
    {
-      RGB133PRINT((RGB133_LINUX_DBG_LOG, "SndCardFree: sound card does not exist(card==%d), return\n", card));
+      RGB133PRINT((RGB133_LINUX_DBG_LOG, "SndCardFree: sound card does not exist (card == %p), return\n", card));
       return -1;
    }
    else
-      return snd_card_free((struct snd_card*)card);
+   {
+      snd_card_free((struct snd_card*)card);
+      return 0;
+   }
 }
 
 // This function acts similarly to SndCardFree() but it tends to call snd_card_free_when_closed() over snd_card_free;
@@ -83,9 +86,9 @@ int SndCardFree(void* card)
 // with snd_card_free_when_closed(), card is disconnected and card's resources are freed later
 int SndCardRemove(void* card)
 {
-   if(!card)
+   if (!card)
    {
-      RGB133PRINT((RGB133_LINUX_DBG_LOG, "SndCardRemove: sound card does not exist(card==%d), return\n", card));
+      RGB133PRINT((RGB133_LINUX_DBG_LOG, "SndCardRemove: sound card does not exist (card == %p), return\n", card));
       return -1;
    }
    else
@@ -93,7 +96,8 @@ int SndCardRemove(void* card)
 #ifdef RGB133_CONFIG_HAVE_SND_CARD_FREE_WHEN_CLOSED
       return snd_card_free_when_closed((struct snd_card*)card);
 #else
-      return snd_card_free((struct snd_card*)card);
+      snd_card_free((struct snd_card*)card);
+      return 0;
 #endif
    }
 }
