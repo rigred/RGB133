@@ -9,6 +9,7 @@
 
 CC="$1"
 ARCH="$2"
+DISTRIBUTION=$(lsb_release -is)
 SYSINC=`$CC -print-file-name=include 2> /dev/null`
 KERNELDIR="$3"
 KERNELBLDDIR="$3/build"
@@ -550,6 +551,8 @@ void dummy(void)
         rm -f conftest$$.o
         return
       fi
+      # hacky bypass of failing conftest check
+      #echo "#define RGB133_CONFIG_HAVE_VIDIOC_DEFAULT_EXT" >> conftest.h
       # Do we have the unsigned default ioctl handler?
       echo >> config.log
 
@@ -1416,10 +1419,17 @@ void dummy(void)
       rm -f conftest$$.c
       
       if [ ! -f conftest$$.o ] ; then
-        ARCH=`uname -m | sed -e 's/i.86/i386/'`
+        ARCH=$(uname -m | sed -e 's/i.86/i386/')
         if [ "$ARCH" != "i386" ] ; then
-          KVER=`uname -r`
-          PREEMPT_RT=`cat /boot/config-$KVER | grep "PREEMPT_RT"`
+          KVER=$(uname -r)
+
+          if [ "$DISTRIBUTION" = "Debian" ]; then
+            PREEMPT_RT=$(cat /boot/config-$KVER | grep "PREEMPT_RT")
+          elif [ "$DISTRIBUTION" = "Arch" ]; then
+            echo "Detected Arch Linux!"
+            PREEMPT_RT=$(zcat /proc/config.gz | grep "PREEMPT_RT")
+          fi
+
           if [ -n "$PREEMPT_RT" ] ; then
             echo "#define RGB133_CONFIG_RT_AND_UNDEFINED_KERNEL_STACK" >> conftest.h
           fi

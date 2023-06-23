@@ -224,11 +224,18 @@ get_sys_pcicfg ( )
    lspci -xxx -v > $TMP_DIAG_DIR/lspci.txt
 }
 
-get_kernel_info ( )
+get_kernel_info()
 {
-   KERNELVERSION=`uname -r`
-   DOTCONFIG=`cat /boot/config-$KERNELVERSION`
-   SYMBOLS=`cat /proc/kallsyms`
+   KERNELVERSION=$(uname -r)
+   
+   if [ "$DISTRIBUTION" = "Debian" ]; then
+      DOTCONFIG=$(cat /boot/config-$KERNELVERSION)
+   elif [ "$DISTRIBUTION" = "Arch" ]; then
+      DOTCONFIG=$(zcat /proc/config.gz)
+   fi
+   
+   SYMBOLS=$(cat /proc/kallsyms)
+   
    echo "===== Vision / VisionLC Kernel Information =====" > $TMP_DIAG_DIR/kernelinfo.txt
    echo >> $TMP_DIAG_DIR/kernelinfo.txt
    echo "KERNEL VERSION: $KERNELVERSION" >> $TMP_DIAG_DIR/kernelinfo.txt
@@ -240,6 +247,7 @@ get_kernel_info ( )
    echo "$SYMBOLS" >> $TMP_DIAG_DIR/kernelinfo.txt
    echo >> $TMP_DIAG_DIR/kernelinfo.txt
 }
+
 
 get_installed_module_info ( )
 {

@@ -10,6 +10,7 @@
 SILENT="NO"
 USER_MODE="NO"
 VERSION="NO"
+DISTRIBUTION=$(lsb_release -is)
 
 # TYPE is set to appropriate driver in release build
 TYPE=133
@@ -49,12 +50,19 @@ fi
 
 RT=""
 if [ "$ARCH_BITS" = "64" ] ; then
-  KVER=`uname -r`
-  PREEMPT_RT=`cat /boot/config-$KVER | grep "PREEMPT_RT"`
+  KVER=$(uname -r)
+  
+  if [ "$DISTRIBUTION" = "Debian" ]; then
+    PREEMPT_RT=$(cat /boot/config-$KVER | grep "PREEMPT_RT")
+  elif [ "$DISTRIBUTION" = "Arch" ]; then
+    PREEMPT_RT=$(zcat /proc/config.gz | grep "PREEMPT_RT")
+  fi
+  
   if [ -n "$PREEMPT_RT" ] ; then
-     RT="RT."
+    RT="RT."
   fi
 fi
+
 
 SAMPLE_DIR="apps/${SAMPLE_APP}"
 
