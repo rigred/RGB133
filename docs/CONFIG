@@ -1,0 +1,280 @@
+================================================================
+= Datapath Limited Vision Linux Driver
+= CONFIG
+= Date: 12/02/2014 
+= support@datapath.co.uk
+================================================================
+
+===== Module Load Parameters =====
+
+It is possible to apply module parameters using the modprobe command.  Please find below the options for the module load parameters:
+
+ - rgb133_video_nr
+     - Specify the base video4linux device number.
+     - Set to -1 for auto-detect [default].
+     - Set to >= 0 for manual assignment.
+       Example: If set to 2, the base device node will be /dev/video2.
+       
+     # sudo modprobe rgb133 rgb133_video_nr=2
+ 
+ - rgb133_expose_inputs
+     - Create a video4linux device node for each input.
+     - Set to 0 to disable, only one device node per Vision device [default].
+     - Set to 1 to enable exposing a device node per input on each device.
+     
+     # sudo modprobe rgb133 rgb133_expose_inputs=1
+
+ - rgb133_debug
+     - Specify the debug level, from 1 to 17.
+     - Set to 1 for Initialisation info, Errors and Warnings [default].
+     - See rgb133debug.h for more details.
+ 
+     # sudo modprobe rgb133 rgb133_debug=4
+ 
+ - rgb133_show_fps
+     - Show the FPS information for running captures.
+     - Set to 1 to show the output.
+     - Set to 0 to disable the output [default].
+ 
+     # sudo modprobe rgb133 rgb133_show_fps=1
+ 
+ - rgb133_coloured_buffers
+     - Initialise the buffers to a known colour to determine if DMA is working correctly.
+     - Set to 0 to use black buffers [default].
+     - Set to 1 to use coloured buffers.
+
+     # sudo modprobe rgb133 rgb133_coloured_buffers=1
+
+ - rgb133_interlace
+     - Specify the default interlacing/deinterlacing behaviour.
+     - Set to 0 to disable any interlacing/deinterlacing behaviour [default].
+     - Set to 2 (V4L2_FIELD_TOP) to select DMA of EVEN fields only.
+     - Set to 3 (V4L2_FIELD_BOTTOM) to select DMA of ODD fields only.
+     - Set to 7 (V4L2_FIELD_ALTERNATE) to select DMA of ALTERNATE EVEN/ODD fields.
+     - Set to 128 to select Bob deinterlacing.
+ 
+     # sudo modprobe rgb133 rgb133_interlace=128
+
+  - rgb133_non_vl42_pix_fmts
+     - Enable / disable pixel formats unknown to v4l2.
+     - Set to 1 to expose all pixel formats available in the driver [default].
+     - Set to 0 to disable non-v4l2 pixel formats.
+ 
+     # sudo modprobe rgb133 rgb133_non_vl42_pix_fmts=0
+ 
+ - rgb133_flip_rgb
+     - Flip the R & B data for 24/32-bit RGB data pixel formats.
+     - Set to 0 to disable the R & B flip [default].
+     - Set to 1 to enable the flip.
+ 
+     # sudo modprobe rgb133 rgb133_flip_rgb=1
+ 
+ - rgb133_limit_vid_timings
+     - Apply extra limits to the video timing adjustments available.
+     - Set to 0 to use standard limits [default].
+     - Set to 1 to apply the extra limits.
+ 
+     # sudo modprobe rgb133 rgb133_limit_vid_timings=1
+ 
+ - rgb133_dumb_buffer_width
+ - rgb133_dumb_buffer_height
+ - rgb133_dumb_buffer_rate
+     - For compatibility with applications such as Skype which do not handle
+       continuous ranges of capture buffer or capture rate correctly.
+     - Set to -1 to use default behaviour [default].
+     - Set to desired width & height values (in pixels) and rate value (in fps). 
+ 
+     # sudo modprobe rgb133 rgb133_dumb_buffer_width=640 rgb133_dumb_buffer_height=480 rgb133_dumb_buffer_rate=25
+ 
+ - rgb133_timestamp_info
+     - Control the output of timestamp information.
+     - Set to 0 to disable output of timestamp information [default].
+     - Set to 1 to enable output of timestamp for 1 frame every 5s.
+     - Set to 2 to enable continuous output of verbose timestamp information.
+ 
+     # sudo modprobe rgb133 rgb133_timestamp_info=2
+ 
+ - rgb133_frame_debug
+     - Control the output of frame debug information.
+     - Set to 0 to disable output of frame debug information [default].
+     - Set to 1 to enable output of frame debug information.
+         - Non-sequential frames, timestamps more than a frame time apart.
+ 
+     # sudo modprobe rgb133 rgb133_frame_debug=1
+ 
+ - rgb133_offset_gtf
+     - Adjust the defaults for the Vertical Porches when an analog GTF mode has been detected.
+     - Set to 0 to disable any adjustment [default].
+     - Set to 1 to offset the Vertical Porches by 1.
+     
+     # sudo modprobe rgb133 rgb133_offset_gtf=1
+ 
+ - rgb133_nosig
+     - Informs the driver whether to draw no signal buffers.
+     - Set to 0 to enable drawing of no signal buffers [default].
+     - Set to 1 to disable drawing of no signal buffers.
+
+     # sudo modprobe rgb133 rgb133_nosig=1
+
+ - rgb133_no_signal_text
+ - rgb133_out_of_range_text
+ - rgb133_unrecognisable_text
+     - Set the string to be displayed when an invalid input is detected.
+           - Maximum of 63 characters, if text is greater in length than 63 characters the message
+             will be truncated.
+     - Defaults: "No Signal"
+                 "Out Of Range"
+                 "Unrecognisible"
+
+     # sudo modprobe rgb133 rgb133_no_signal_text="No Valid Input"
+
+ - rgb133_msg_colour
+     - Sets the colour of the text for the no signal output buffer.
+     - Set to 0 for BLACK
+     - Set to 1 for WHITE
+     - Set to 2 for YELLOW 
+     - Set to 3 for CYAN
+     - Set to 4 for GREEN [default] 
+     - Set to 5 for MAGENTA
+     - Set to 6 for RED
+     - Set to 7 for BLUE
+     - Set to 8 for GREY
+
+     # sudo modprobe rgb133 rgb133_msg_colour=6
+ 
+ - rgb133_detect_mode
+     - Sets the detection mode globally for any Vision device in the system.
+       - Set to 0 for 'Default', Analogue first then DVI [default].
+       - Set to 1 for 'Analogue' only.
+       - Set to 2 for 'DVI' only.
+
+     # sudo modprobe rgb133 rgb133_detect_mode=1
+
+ - rgb133_scaling
+     - Globally sets the scaling behaviour for each capture.  Can be overriden locally by an individual capture
+       by using a private ioctl call or by using the appropriate VIDIOC_S_CTRL ioctl.
+       - Set to 0 for 'Default'        - input source up/downscaled to fit inside the capture buffer [default].
+       - Set to 1 for 'Upscale Only'   - input source upscaled only.
+                                           - For capture buffers larger than the input source, the active data will be
+                                             upscaled to fit inside the capture buffer.
+                                           - For capture buffers smaller than the input source, the active data will be
+                                             cropped to fit inside the capture buffer.
+       - Set to 2 for 'Downscale Only' - input source downscaled only.
+                                           - For capture buffers larger than the input source, the active data will be
+                                             centered inside the capture buffer.
+                                           - For capture buffers smaller than the input source, the active data will be
+                                             downscaled to fit inside the capture buffer.
+       - Set to 3 for 'No Scaling'     - input source is never scaled.
+                                           - For capture buffers larger than the input source, the active data will be
+                                             centered inside the capture buffer.
+                                           - For capture buffers smaller than the input source, the active data will be
+                                             cropped to fit inside the capture buffer.
+
+     # sudo modprobe rgb133 rgb133_scaling=3
+ 
+ - rgb133_scaling_aspect_ratio
+     - Sets the aspect ratio used when scaling into the capture buffer.
+       - Set to 0 for 'Default' - input source up/downscaled to the aspect ratio of the capture buffer [default].
+       - Set to 1 for 'Source'  - input source up/downscaled to the aspect ratio of the current input source.
+       - Set to 2 for '3:2'     - input source up/downscaled using 3:2 AR to fit inside capture buffer dimensions.
+       - Set to 3 for '4:3'     - input source up/downscaled using 4:3 AR to fit inside capture buffer dimensions.
+       - Set to 4 for '5:3'     - input source up/downscaled using 5:3 AR to fit inside capture buffer dimensions.
+       - Set to 5 for '5:4'     - input source up/downscaled using 5:4 AR to fit inside capture buffer dimensions.
+       - Set to 6 for '8:5'     - input source up/downscaled using 8:5 AR to fit inside capture buffer dimensionsi.
+                                      * This is functionally the same as 16:10.
+       - Set to 7 for '16:9'    - input source up/downscaled using 16:9 AR to fit inside capture buffer dimensions.
+       - Set to 8 for '16:10'   - input source up/downscaled using 16:10 AR to fit inside capture buffer dimensions.
+       - Set to 9 for '17:9'    - input source up/downscaled using 17:9 AR to fit inside capture buffer dimensions.
+
+     # sudo modprobe rgb133 rgb133_scaling_aspect_ratio=6
+     
+ - rgb133_colour_domain
+     - Globally sets the default detection colour domain.
+       - Set to 0  for 'Auto' - use the detected colour domain [default].
+       - Set to 1  for 'Full Range RGB BT.709'
+       - Set to 2  for 'Full Range YUV BT.709'
+       - Set to 3  for 'Full Range YUV BT.601'
+       - Set to 4  for 'Studio Range YUV BT.709'
+       - Set to 5  for 'Studio Range YUV BT.601'
+       - Set to 6  for 'Studio Range RGB BT.709'
+       - Set to 7  for 'Full Range YUV BT.2020'
+       - Set to 8  for 'Studio Range YUV BT.2020'
+       - Set to 9  for 'Full Range RGB BT.601'
+       - Set to 10 for 'Studio Range RGB BT.601'
+       - Set to 11 for 'Full Range RGB BT.2020'
+       - Set to 12 for 'Studio Range RGB BT.2020'
+
+     # sudo modprobe rgb133 rgb133_colour_domain=2       
+ 
+ - rgb133_hdcp
+     - Controls the behaviour for HDCP sources. 
+       - Set to 0 for 'Off' - HDCP off [default].
+       - Set to 1 for 'On'  - HDCP on.
+                              When HDCP is 'On', the capture buffer *must* be a maximum of a quarter width
+                              and a quarter height of the currently set cropping parameters (a sixteenth
+                              of the cropped area).
+
+                              Example: For a  1920x1080 source, captured 1-to-1, data will only be captured into scaled down
+                                       buffer with maximum dimensions of 480x270.
+                                       
+                                       If the capture is cropped, for example the top left quadrant from 0,0 to 480,270, data
+                                       will only be captured into scaled down buffer with maximum dimensions of 120x67.
+
+     # sudo modprobe rgb133 rgb133_hdcp=1
+     
+ - rgb133_overscan_cropping
+     - Turns overscan cropping on/off.
+       - Set to 0 to disable.
+       - Set to 1 to enable [default].
+
+     # sudo modprobe rgb133 rgb133_overscan_cropping=0
+ 
+ - rgb133_full_range
+     - Enables full range of pixel values.
+       - Set to 0 to disable (studio range).
+       - Set to 1 to enable (full range) [default].
+ 
+     # sudo modprobe rgb133 rgb133_full_range=0
+
+ - rgb133_audio_mute_digital
+     - Globally mutes digital audio interfaces (including SDI) on/off.
+       - Set to 0 to not mute [default].
+       - Set to 1 to mute.
+
+     # sudo modprobe rgb133 rgb133_audio_mute_digital=1
+
+ - rgb133_audio_mute_analog
+     - Globally controls mute settings for unbalanced and balanced analog audio interfaces,
+       including the inputs configured to capture from an external audio source e.g. through the AM2 module.
+       - Set to 0 to mute none.
+       - Set to 1 to mute unbalanced audio.
+       - Set to 2 to mute balanced audio [default].
+       - Set to 3 to mute both unbalanced and balanced audio.
+
+     # sudo modprobe rgb133 rgb133_audio_mute_analog=1
+
+ - rgb133_audio_volume_unbalanced
+     - Sets volume on unbalanced analog interfaces (including the AM2 module).
+       - Set to an integer value between 0 (minimum gain) and 100 (maximum gain).
+
+     # sudo modprobe rgb133 rgb133_audio_volume_unbalanced=50
+
+ - rgb133_audio_volume_balanced
+     - Sets volume on balanced analog interfaces (including the AM2 module).
+       - Set to an integer value between 0 (minimum gain) and 100 (maximum gain).
+
+     # sudo modprobe rgb133 rgb133_audio_volume_balanced=50
+
+ - rgb133_diagnostics_mode
+     - Turns diagnostics mode on/off.
+       - Set to 0 to disable [default].
+       - Set to 1 to enable.
+ 
+     # sudo modprobe rgb133 rgb133_diagnostics_mode=1
+     
+===== Automatic Application =====
+ 
+If you wish to use module load parameters every time the driver is loaded please create an rgb133.conf file and
+place in the /etc/modprobe.d directory on your system.
+ 
+Please see the sample in <install_dir>/scripts/rgb133.sample.conf for more information.

@@ -1,0 +1,38 @@
+================================================================
+= Datapath Limited Vision Linux Driver
+= ERRATA
+= Date: 04/11/2011 
+= support@datapath.co.uk
+================================================================
+
+This Errata contains the latest known issues
+in the Vision Linux driver.
+
+For Release: 6.1.2.0 and later:
+
+ - Split Kernel/User space driver can only handle one capture per channel for HD inputs of
+   VisionRGB-E1/VisionRGB-E2/VisionRGB-E2S and one capture per channel on the
+   HD input for VisionSD4+1.
+ - Split Kernel/User space driver can only handle one capture per channel and only capture input 1 for SD
+   inputs on VisionSD4+1 or VisionSD8.
+ - Capture parameters are not persisted over a reboot.
+ - Uninstall doesn't remove the initial installation directory (ie. the directory the installation package
+   is unzipped into).
+ - The Sample Vision capture application is currently intended to provide only a basic sample
+   capture application using Qt. Options which are currently disabled (greyed out) may be implemented in
+   a future release.  The is no accelerated drawing interface (ie. using OpenGL).
+   A minimum version of Qt4.5 is required to run the sample Vision application.
+ 
+For more information, any other support issues or questions please email support@datapath.co.uk
+
+Please include details of computer system such as motherboard type, processor type, RAM and the number
+of (and type of) Datapath Limited cards including positions in the system.
+
+Please include details of Linux kernel version, and if appropriate, OS Distribution (Ubuntu, Fedora Core,
+Red Hat Enterprise etc).
+
+Please also run the provided diagnostics harvesting script (for more details please see the DIAG file
+included with this release).
+
+ # cd <install_dir>
+ # ./scripts/diag.sh

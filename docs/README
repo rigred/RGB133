@@ -1,0 +1,66 @@
+================================================================
+= Datapath Limited Vision Linux Driver
+= README
+= Date: 25/03/2011 
+= support@datapath.co.uk
+================================================================
+
+===== Driver Architecture =====
+The driver is supplied as an open source wrapper and a binary, platform independant, core.
+
+The driver supports the Video4Linux API version 2 (V4L2).
+The driver supports the ALSA API for audio capture.
+
+===== Compatibility =====
+For compatibility with media players, please see the COMPATIBILITY file.
+
+===== Licensing =====
+For licensing information please read the LICENCE file.
+
+===== Installation =====
+For installation instructions, please read the INSTALL file.
+
+===== Application Usage =====
+For a basic guide to MPlayer usage with Datapath Limited capture cards see mplayer.txt
+For a basic guide to VLC usage with Datapath Limited capture cards see vlc.txt
+For a basic guide to VLC usage with Datapath Limited capture cards (via the command line) see vlc-command.txt
+
+===== Audio =====
+For a basic guide to audio capture usage with Datapath Limited capture cards read the AUDIO file.
+
+===== Utils =====
+Sample source is provided to show how to interrogate the Vision devices to find the devices names,
+video4linux node names, input source characteristics and basic device parameters.
+
+This source is located in the 'apps/utils' directory under the main installation directory.
+
+Available in v0.1.6 and later.
+
+Please see the html documentation in apps/utils/docs/html/index.html.
+
+===== Errata =====
+For the latest Errata, please read the ERRATA file.
+
+===== Troubleshooting =====
+If you see a capture with one of the following solid colours you are experiencing errors performing
+the DMA of the capture data to the output buffer:
+
+CYAN:    MMAP'ed io failing for NO SIGNAL on input
+BLUE:    MMAP'ed io failing for SIGNAL on input
+MAGENTA: read io failing for NO SIGNAL on input
+RED:     read io failing for SIGNAL on input
+
+===== Support =====
+For support issues (or questions) please contact support@datapath.co.uk
+
+Please include details of computer system such as motherboard type, processor type, RAM and the number
+of (and type of) Datapath Limited cards including positions in the system.
+
+Please include details of Linux kernel version, and if appropriate, OS Distribution (Ubuntu, Fedora Core,
+Red Hat Enterprise etc).
+
+Please also run the provided diagnostics harvesting script (for more details please see the DIAG file
+included with this release).
+
+ # cd <install_dir>
+ # ./scripts/diag.sh

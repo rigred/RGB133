@@ -1,0 +1,241 @@
+#! /bin/sh
+
+################################################################
+# Datapath Limited Vision / VisionLC Linux Driver
+# DGC133
+# Date: 19/04/2013 
+# support@datapath.co.uk
+################################################################
+
+### BEGIN INIT INFO
+# Provides:          DGC133
+# Required-Start:    
+# Required-Stop:     
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: initscript for User Mode Vision / VisionLC Driver
+# Description:       Launches DGC133 user application to interact
+#                    with Vision / VisionLC device driver
+### END INIT INFO
+
+# Author: <support@datapath.co.uk>
+#
+
+# Do NOT "set -e"
+
+# PATH should only include /usr/* if it runs after the mountnfs.sh script
+DESC="Vision / VisionLC User Mode Service"
+NAME=DGC133
+DAEMON=/usr/local/DGC133/$NAME
+DAEMON_ARGS="/usr/local/DGC133/service.log"
+PROGRAM="$NAME $DAEMON_ARGS &"
+PIDFILE=/var/run/$NAME.pid
+SCRIPTNAME=/etc/init.d/$NAME
+PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/DGC133
+
+# Exit if the package is not installed
+[ -x "$DAEMON" ] || exit 0
+
+# Read configuration variable file if it is present
+[ -r /etc/default/$NAME ] && . /etc/default/$NAME
+
+if [ -e /lib/init/vars.sh ] ; then
+   # Load the VERBOSE setting and other rcS variables
+   . /lib/init/vars.sh
+fi
+
+if [ -e /lib/lsb/init-functions ] ; then
+  # Define LSB log_* functions.
+  # Depend on lsb-base (>= 3.0-6) to ensure that this file is present.
+  . /lib/lsb/init-functions
+fi
+
+if [ -e /etc/rc.d/init.d/functions ] ; then
+  . /etc/rc.d/init.d/functions
+fi
+
+PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/DGC133
+
+STARTSTOPDAEMON=`which start-stop-daemon 2> /dev/null`
+if [ -n "$STARTSTOPDAEMON" ] ; then
+  if [ -e "$STARTSTOPDAEMON" ] ; then
+     STARTSTOPDAEMON_TESTARGS="--start --quiet --pidfile $PIDFILE --exec $DAEMON --test > /dev/null || return 1"
+     STARTSTOPDAEMON_STARTARGS="--start -b --quiet --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_ARGS || return 2"
+     STARTSTOPDAEMON_STOPARGS="--stop --quiet --retry=INT/5/KILL/5 --pidfile $PIDFILE --name $NAME"
+     STARTSTOPDAEMON_FORCESTOPARGS="--stop --quiet --oknodo --retry=0/5/KILL/5 --exec $DAEMON"
+     STARTSTOPDAEMON_TEST="YES"
+   fi
+else
+  STARTSTOPDAEMON=daemon
+  STARTSTOPDAEMON_STARTARGS=""
+  STARTSTOPDAEMON_STARTARGS=""
+  STARTSTOPDAEMON_STOPARGS=""
+  STARTSTOPDAEMON_TEST="NO"
+fi
+
+#
+# Function that starts the daemon/service
+#
+do_start()
+{
+   if [ "$STARTSTOPDAEMON_TEST" = "YES" ] ; then
+   	# Return
+	   #   0 if daemon has been started
+   	#   1 if daemon was already running
+	   #   2 if daemon could not be started
+   	start-stop-daemon --start -b --quiet --pidfile $PIDFILE --exec $DAEMON -- \
+	   	$DAEMON_ARGS \
+		   || return 2
+   	# Add code here, if necessary, that waits for the process to be ready
+	   # to handle requests from services started subsequently which depend
+	   # on this one.  As a last resort, sleep for some time.
+	else
+	   daemon +0 $PROGRAM
+	   RETVAL=$?
+	   if [ $RETVAL -ne 0 ] ; then
+	      failure
+	   fi
+	   return 2
+	fi
+}
+
+#
+# Function that stops the daemon/service
+#
+do_stop()
+{
+   # Move the log files
+   if [ -e /usr/local/DGC133/service.log ] ; then
+      if [ -e /usr/local/DGC133/service.log.1 ] ; then
+         if [ -e /usr/local/DGC133/service.log.2 ] ; then
+            if [ -e /usr/local/DGC133/service.log.3 ] ; then
+               rm -f /usr/local/DGC133/service.log.3
+            fi
+            mv /usr/local/DGC133/service.log.2 /usr/local/DGC133/service.log.3
+         fi
+         mv /usr/local/DGC133/service.log.1 /usr/local/DGC133/service.log.2
+      fi
+      mv /usr/local/DGC133/service.log /usr/local/DGC133/service.log.1
+   fi
+   
+   if [ "$STARTSTOPDAEMON_TEST" = "YES" ] ; then
+   	# Return
+	   #   0 if daemon has been stopped
+   	#   1 if daemon was already stopped
+	   #   2 if daemon could not be stopped
+   	#   other if a failure occurred
+	   start-stop-daemon --stop --quiet --retry=INT/10/KILL/5 --pidfile $PIDFILE --name $NAME
+   	RETVAL="$?"
+	   [ "$RETVAL" = 2 ] && return 2
+   	# Wait for children to finish too if this is a daemon that forks
+	   # and if the daemon is only ever run from this initscript.
+   	# If the above conditions are not satisfied then add some other code
+	   # that waits for the process to drop all resources that could be
+   	# needed by services started subsequently.  A last resort is to
+	   # sleep for some time.
+   	start-stop-daemon --stop --quiet --oknodo --retry=INT/10/KILL/5 --exec $DAEMON
+	   [ "$?" = 2 ] && return 2
+   	# Many daemons don't delete their pidfiles when they exit.
+   else
+      if [ $PIDFILE ] ; then
+         killall -2 $NAME
+         RETVAL=$?
+         if [ $RETVAL -ne 0 ] ; then
+            killall -9 $NAME
+            if [ $RETVAL -ne 0 ] ; then
+              failure
+            fi
+         fi
+      else
+         RETVAL=1
+         failure
+      fi
+   fi
+   rm -f $PIDFILE
+   return "$RETVAL"
+}
+
+#
+# Function that sends a SIGHUP to the daemon/service
+#
+do_reload() {
+	#
+	# If the daemon can reload its configuration without
+	# restarting (for example, when it is sent a SIGHUP),
+	# then implement that here.
+	#
+	start-stop-daemon --stop --signal 1 --quiet --pidfile $PIDFILE --name $NAME
+	return 0
+}
+
+case "$1" in
+  start)
+        if [ "$STARTSTOPDAEMON_TEST" = "YES" ] ; then
+        	[ "$VERBOSE" != no ] && log_daemon_msg "Starting $DESC" "$NAME"
+        fi
+	do_start
+        if [ "$STARTSTOPDAEMON_TEST" = "YES" ] ; then
+	   case "$?" in
+		   0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+		   2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+	   esac
+        fi
+	;;
+  stop)
+        if [ "$STARTSTOPDAEMON_TEST" = "YES" ] ; then
+	   [ "$VERBOSE" != no ] && log_daemon_msg "Stopping $DESC" "$NAME"
+        fi
+	do_stop
+        if [ "$STARTSTOPDAEMON_TEST" = "YES" ] ; then
+	   case "$?" in
+		   0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+		   2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+	   esac
+        fi
+	;;
+  status)
+       status_of_proc "$DAEMON" "$NAME" && exit 0 || exit $?
+       ;;
+  #reload|force-reload)
+	#
+	# If do_reload() is not implemented then leave this commented out
+	# and leave 'force-reload' as an alias for 'restart'.
+	#
+	#log_daemon_msg "Reloading $DESC" "$NAME"
+	#do_reload
+	#log_end_msg $?
+	#;;
+  restart|force-reload)
+	#
+	# If the "reload" option is implemented then remove the
+	# 'force-reload' alias
+	#
+        if [ "$STARTSTOPDAEMON_TEST" = "YES" ] ; then
+	   log_daemon_msg "Restarting $DESC" "$NAME"
+        fi
+	do_stop
+	case "$?" in
+	  0|1)
+		do_start
+                if [ "$STARTSTOPDAEMON_TEST" = "YES" ] ; then
+		   case "$?" in
+			   0) log_end_msg 0 ;;
+			   1) log_end_msg 1 ;; # Old process is still running
+			   *) log_end_msg 1 ;; # Failed to start
+		   esac
+                fi
+		;;
+	  *)
+	  	# Failed to stop
+		log_end_msg 1
+		;;
+	esac
+	;;
+  *)
+	#echo "Usage: $SCRIPTNAME {start|stop|restart|reload|force-reload}" >&2
+	echo "Usage: $SCRIPTNAME {start|stop|status|restart|force-reload}" >&2
+	exit 3
+	;;
+esac
+
+:

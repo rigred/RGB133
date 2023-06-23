@@ -1,0 +1,13 @@
+[Unit]
+Description=Vision / VisionLC Links Application
+StartLimitInterval=60
+StartLimitBurst=3
+
+[Service]
+ExecStart=/usr/local/DGC133/RGB133Links
+Restart=on-failure
+RestartSec=10
+Type=forking
+
+[Install]
+WantedBy=multi-user.target graphical.target runlevel3.target runlevel5.target

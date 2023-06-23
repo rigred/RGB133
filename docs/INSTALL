@@ -1,0 +1,71 @@
+================================================================
+= Datapath Limited Vision Linux Driver
+= INSTALL
+= Date: 14/11/2011 
+= support@datapath.co.uk
+================================================================
+
+It is likely that the commands contained in this file will have to be run
+as the root user.
+
+Installing the Datapath Limited Vision Linux Driver
+
+The driver takes the form of a Linux wrapper surrounding a binary core.
+
+To compile, install and load the driver execute the installation script:
+	$ cd <PACKAGE BASE>
+	$ ./scripts/install.kernel
+	
+   Note: The Split Kernel/User Mode Driver is no longer supported.
+	
+After a successful installation the driver module will be built, installed
+and loaded into the kernel (with the User Space service running if the split
+driver has been installed).  From this point on the kernel loadable module
+and User Space service (if applicable) will be loaded each time the machine
+is booted up.
+
+Please note that it is possible that the installation package will contain a
+newer version of firmware then the version stored on the Vision
+card itself.  If this is the case, this firmware will be upgraded at
+installation time.  Please see the FIRMWARE file for more information. 
+
+To install the driver silently, and therefore automatically accept the
+Datapath Limited Software License, add the -s switch to the installation command
+line.  Installation will commence after 10 seconds, to cancel the install
+press CTRL-C.
+
+The driver supports the Video4Linux v2 API.  It has been noted however that
+all V4L2 compliant applications appear to use the V4L2 API in different ways
+so if you experience problems capturing from a Vision card please forward
+details of your experience to support@datapath.co.uk.
+
+If the jumper links have been used to set card ID(s), ordered symbolic links /dev/dada#
+will be created linking to the real unordered V4L2 /dev/videoN device node.  If you wish
+to use fixed order inputs, please use /dev/dada# as the video4linux device node in your
+application or on the command line to your chosen capture application.
+
+After installation, in the system log (/var/log/messages) you should see something similar to:
+
+Dec 15 11:38:45 danny-test kernel: [  179.053720] Linux video capture interface: v2.00
+Dec 15 11:38:45 danny-test kernel: [  179.060108] rgb133: 
+Dec 15 11:38:45 danny-test kernel: [  179.060110] 
+Dec 15 11:38:45 danny-test kernel: [  179.060111] 
+Dec 15 11:38:45 danny-test kernel: [  179.060111] 
+Dec 15 11:38:45 danny-test kernel: [  179.060112] 
+Dec 15 11:38:45 danny-test kernel: [  179.060113] ===== Vision Driver Init =====
+Dec 15 11:38:45 danny-test kernel: [  179.060114] 
+Dec 15 11:38:46 danny-test kernel: [  180.073744] firmware: requesting DGC133FW.BIN
+Dec 15 11:38:46 danny-test kernel: [  180.078204] rgb133: VisionRGB-E1: Vision capture driver...loaded as /dev/video0
+Dec 15 11:38:49 danny-test kernel: [  183.135048] rgb133: rgb133_init: Datapath Limited Vision Capture Driver ver. 0.0.1 loaded ok.
+
+Uninstalling the Datapath Limited Vision Linux Driver
+
+To uninstall the driver, execute the following commands:
+   $ cd <PACKAGE BASE>
+   $ ./scripts/uninstall.sh
+   
+ Please manually remove the installation directory <PACKAGE BASE>.
+ 
+ A sample capture application is now included (V6.1.0.0 and later). This will be installed into the /usr/local/Vision/ directory.
+ Please see the ERRATA for outstanding issues/bug in relation to the Vision capture application.
+

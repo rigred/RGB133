@@ -1,0 +1,57 @@
+================================================================
+= Datapath Limited Vision Linux Driver
+= mplayer.txt
+= Date: 25/03/2011 
+= support@datapath.co.uk
+================================================================
+
+Instructions for using MPlayer with the Datapath Limited capture cards.
+
+Make sure that MPlayer is installed in the system before continuing.
+
+== Installing MPlayer ==
+
+To install in Ubuntu:
+	1) Start the synaptic package manager
+	2) Search for 'mplayer'
+	3) Right-click on the 'mplayer' line and choose
+	   to "Mark for Installation"
+	4) Click the "Apply" button and follow synaptic
+	   installation instructions
+
+MPlayer has a man page which explains its function and options.
+
+	$ man mplayer
+
+== Capturing ==
+	
+To start a capture using MPlayer (the Datapath Limited driver must already
+be loaded):
+		$ mplayer tv:// -tv driver=v4l2
+		
+The default capture resolution of mplayer is 640x480.  To set a different
+capture resolution:
+		$ mplayer tv:// -tv driver=v4l2:width=<width>:height=<height>
+			- Replacing <width> and <height> with the desired values
+
+== MPlayer Advanced Options ==
+
+To run mplayer with verbose output:
+		$ mplayer -v [0|1|2] tv:// -tv driver=v4l2
+			- [0|1|2] Choose the verbosity level
+
+To run mplayer with no borders:
+		$ mplayer -noborder tv:// -tv driver=v4l2
+
+To run mplayer and place window at specific location:
+		$ mplayer -geometry +<x>+<y> tv:// -tv driver=v4l2
+		
+		Example, to place window in top left:
+			$ mplayer -geometry +0+0 tv:// -tv driver=v4l2
+
+		Example, to place default 640x480 window in bottom right of 1280x1024 desktop:
+			$ mplayer -geometry +640+544 tv:// -tv driver=v4l2
+
+
+
+

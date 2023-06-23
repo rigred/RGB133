@@ -1,0 +1,52 @@
+================================================================
+= Datapath Limited Vision Linux Driver
+= gst-launch.txt
+= Date: 25/03/2011 
+= support@datapath.co.uk
+================================================================
+
+Instructions for using gst-launch with the Datapath Limited capture cards.
+
+Make sure that the gstreamer tools and libraries are installed in the
+system before continuing.
+
+== Installing gst-launch ==
+
+To install in Ubuntu:
+   1) Start the synaptic package manager
+   2) Search for 'gst-launch'
+   3) Right-click on the 'gstreamer-tools' line and choose
+      to "Mark for Installation"
+   4) Click the "Apply" button and follow synaptic
+      installation instructions
+
+The gstreamer tools have a man page which explains their function
+and options.
+
+   $ man gst-launch
+
+== Capturing ==
+   
+To start a capture using gst-launch (the Datapath Limited driver must already
+be loaded):
+      $ gst-launch v4l2src device=/dev/video# ! xvimagesink
+         - Replace # with the desired video device number
+      
+The default capture resolution of gst-launc is 2046x2046.  To set a different
+capture resolution:
+      $ gst-launch v4l2src device=/dev/video# ! video/x-raw-yuv,width=<width>,height=<height> ! xvimagesink
+         - Replacing <width> and <height> with the desired values
+
+== gst-launch Advanced Options ==
+
+To run gst-launch with verbose output:
+      $ gst-launch -vvv v4l2src device=/dev/video# ! xvimagesink
+
+To run gst-launch with an RGB pixel format:
+      $ gst-launch v4l2src device=/dev/video# ! video/x-raw-rgb,bpp=<bpp> ! ffmpegcolorspace ! xvimagesink
+         - Replacing <bpp> with the bits per pixel required, 15 (5-5-5), 16 (5-6-5),
+           24 (8-8-8), and 32 (8-8-8, with an extra empty byte for the alpha)
+
+
+
+

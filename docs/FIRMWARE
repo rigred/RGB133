@@ -1,0 +1,14 @@
+================================================================
+= Datapath Limited Vision Linux Driver
+= INSTALL
+= Date: 04/04/2013
+= support@datapath.co.uk
+================================================================
+
+Each installation package contains a version of firmware which is
+stored on the Vision card itself.
+
+If this firmware requires upgrading, this will be done automatically
+when the driver is installed.  If this firmware is upgraded, the
+machine must be fully powered off (shutdown) rather than being
+rebooted to latch this firmware into use by the Vision card.

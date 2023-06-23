@@ -1,0 +1,67 @@
+================================================================
+= Datapath Limited Vision Linux Driver
+= vlc-command.txt
+= Date: 25/03/2011 
+= support@datapath.co.uk
+================================================================
+
+Instructions for using VLC with the Datapath Limited capture cards by using the command line.
+
+Make sure that VLC is installed in the system before continuing.
+
+== Installing VLC ==
+
+To install in Ubuntu:
+	1) Start the synaptic package manager
+	2) Search for 'vlc'
+	3) Right-click on the 'vlc' line and choose to "Mark for Installation"
+	4) Click the "Apply" button and follow synaptic installation instructions
+
+VLC has a man page which explains its function and options.
+
+	$ man vlc
+
+== Capturing ==
+	
+To start a capture using VLC (the Datapath Limited driver must already be loaded):
+		$ vlc v4l2:// :v4l2-dev=/dev/video#
+		$ vlc v4l2:///dev/video#             (VLC version 1.0.0 or greater)
+
+NOTE: The following examples assume VLC version 0.9.9a.  Please adjust the syntax (as shown above) for VLC versions > 1.0.0.
+	
+== Advanced VLC Options ==
+
+To see verbose output from VLC:
+		$ vlc -vvv v4l2:// :v4l2-dev=/dev/video#
+	   
+To change the V4L2 IO type [only READ and MMAP are supported by the driver]:
+		$ vlc v4l2:// :v4l2-dev=/dev/video# :v4l2-io=[0|1]
+			0 = READ
+			1 = MMAP
+		
+To change the output window pixel format:
+		$ vlc v4l2:// :v4l2-dev=/dev/video# :v4l2-chroma=<chroma>
+		Options: GREY, I240, RV16, RV15, RV24, RV32, YUY2, YUYV, UYVY, I41N,
+		         I422, I420, I411, I400, MJPEG
+		Note: Not all of the above options are supported by the hardware.
+
+To change the output window resolution:
+		$ vlc v4l2:// :v4l2-dev=/dev/video# :v4l2-width=<width> :v4l2-height=<height>
+	   
+To start the capture with a specific brightness:
+		$ vlc v4l2:// :v4l2-dev=/dev/video# :v4l2-brightness=<value>
+	   Alternative DVI input settings: 		contrast 
+	   Alternative Videio input settings:	contrast saturation blacklevel
+	                                      	hue
+
+To start vlc with no window decoration [requires video to be external of
+vlc controls]:
+		$ vlc --no-embedded-video --no-video-deco v4l2:// :v4l2-dev=/dev/video#
+
+		Note: The video can be displayed on top of other windows
+		$ vlc --no-embedded-video --no-video-deco --video-on-top v4l2:// :v4l2-dev=/dev/video#
+		
+To start vlc with no window decoration at a fixed location:
+		$ vlc --no-embedded-video --no-video-deco --video-on-top \
+			--video-x=<x> --video-y=<y> v4l2:// :v4l2-dev=/dev/video#
+

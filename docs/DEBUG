@@ -1,0 +1,86 @@
+================================================================
+= Datapath Limited Vision Linux Driver
+= DEBUG
+= Date: 20/06/2012 
+= support@datapath.co.uk
+================================================================
+
+===== Codes and Masks =====
+The module load parameter "rgb133_debug" controls the logging level for Error, Warning and Debug messages output to the system log.
+
+The raw codes are:
+
+INOUT    0x20000
+MEM      0x10000
+UNIQUE   0x08000
+STUPID   0x04000
+SPIN     0x00080
+IRQ      0x00040
+WORK     0x00020
+DEBUG    0x00010
+TRACE    0x00008
+LOG      0x00004
+WARNING  0x00002
+ERROR    0x00001
+NONE     0x00000
+
+The pre-assigned levels are:
+
+0:       ( RGB133_LINUX_DBG_NONE )
+1:       ( RGB133_LINUX_DBG_ERROR | RGB133_LINUX_DBG_WARNING )
+2:       ( RGB133_LINUX_DBG_L1    | RGB133_LINUX_DBG_LOG )
+3:       ( RGB133_LINUX_DBG_L2    | RGB133_LINUX_DBG_TRACE | RGB133_LINUX_DBG_DEBUG )
+4:       ( RGB133_LINUX_DBG_L3    | RGB133_LINUX_DBG_WORK  | RGB133_LINUX_DBG_IRQ )
+5:       ( RGB133_LINUX_DBG_L4    | RGB133_LINUX_DBG_SPIN )
+6:       ( RGB133_LINUX_DBG_L1    | RGB133_LINUX_DBG_MEM )
+7:       ( RGB133_LINUX_DBG_L2    | RGB133_LINUX_DBG_MEM )
+8:       ( RGB133_LINUX_DBG_L3    | RGB133_LINUX_DBG_MEM )
+9:       ( RGB133_LINUX_DBG_L4    | RGB133_LINUX_DBG_MEM )
+10:      ( RGB133_LINUX_DBG_L5    | RGB133_LINUX_DBG_MEM )
+11:      ( RGB133_LINUX_DBG_L6    | RGB133_LINUX_DBG_MEM )
+12:      ( RGB133_LINUX_DBG_L1    | RGB133_LINUX_DBG_INOUT )
+13:      ( RGB133_LINUX_DBG_L2    | RGB133_LINUX_DBG_INOUT )
+14:      ( RGB133_LINUX_DBG_L3    | RGB133_LINUX_DBG_INOUT )
+15:      ( RGB133_LINUX_DBG_L4    | RGB133_LINUX_DBG_INOUT )
+16:      ( RGB133_LINUX_DBG_L5    | RGB133_LINUX_DBG_INOUT )
+17:      ( RGB133_LINUX_DBG_L6    | RGB133_LINUX_DBG_INOUT )
+
+===== Examples =====
+
+The default level is level '1', Errors and Warnings.  To speficfy this on the module load line:
+
+ # sudo modprobe rgb133 rgb133_debug=1
+
+To output Errors, Warnings, Log messages and Memory debug messages:
+
+ # sudo modprobe rgb133 rgb133_debug=7
+
+===== On The Fly =====
+
+Is is possible to modify the debug level on the fly without reloading the module by using the rgb133debug
+application which comes with the installation package.
+
+To run, execute the application with the required log level number, same pre-assigned codes as above:
+
+ # cd <install_dir>
+ # ./bin/rgb133debug <level>
+
+To set the level for Errors, Warnings and basic ioctl IN/OUT debug messages:
+
+ # ./bin/rgb133debug 12
+  
+===== Support =====
+
+For support issues (or questions) please contact support@datapath.co.uk
+
+Please include details of computer system such as motherboard type, processor type, RAM and the number
+of (and type of) Datapath Limited cards including positions in the system.
+
+Please include details of Linux kernel version, and if appropriate, OS Distribution (Ubuntu, Fedora Core,
+Red Hat Enterprise etc).
+
+Please also run the provided diagnostics harvesting script (for more details please see the DIAG file
+included with this release).
+
+ # cd <install_dir>
+ # ./scripts/diag.sh

@@ -1,0 +1,1207 @@
+================================================================
+= Datapath Limited Vision Linux Driver
+= Changelog
+= support@datapath.co.uk
+================================================================
+
+   12/12/2009 DC
+ - Create package and installer scripts.
+ - Add MPlayer & VLC instructions.
+ - Initial version v0.0.0 
+
+   08/01/2010 DC
+ - Add in config.h genterator script.
+ 
+   04/02/2010 DC
+ - Update LICENCE file.
+ - Release v0.0.1 
+ 
+   19/02/2010 DC
+ - Add 64-bit OS installation support.
+ - Add COMPATIBILITY file.
+ - Fix description bug for multi-input channels.
+ - Release v0.0.2
+
+   25/02/2010 DC
+ - Fix uninitialised pixel format on no signal.
+
+   03/03/2010 DC
+ - Initialise read/mmap io buffers to fixed colours to help determine if the DMA is working.
+ - Update README with colour information.
+ - Remove "RGB-X", replace with Vision.
+ - Release v0.0.3
+
+   08/03/2010 DC
+ - Always use 64-bit types for SG and DMA physical addresses (don't let compiler decide).
+ - Release v0.0.4
+
+   09/03/2010 DC
+ - Update VLC instructions for > v1.0.x changes to command line interface and to note that VLC adds a 'lag' between input and output (app buffering).
+ - Debug print in CaptureReportFPS should always be shown regardless of required level.
+ - Release v0.0.5
+
+   25/03/2010 DC
+ - Fix depmod usage in install script.
+ - Release v0.0.6
+
+   07/04/2010 DC
+ - Add in control device in preparation for app to change video paramters like the 'Input' tab in Vision Window properties.
+
+   07/04/2010 DC
+ - Handle RGB/BGR 24/32-bit pixel formats.
+ - Release v0.0.7
+
+   26/04/2010 DC
+ - Fix bug for available pixel formats in OS's without the extended V4L2 pixel format list.
+
+   22/07/2010 DC
+ - Fix bug when opening second capture on the same channel.  Source width & height now set correctly.
+ - Fix caching of signal/no signal/mmap'd buffer pointers.  Cache needs to be [channel][capture] array.
+ - Initial alpha of User Space driver.
+ - Release v0.1.0
+
+   23/07/2010 DC
+ - Update packaging and install for User Mode driver.
+ - Release v0.1.1
+ 
+   27/07/2010 DC
+ - Handle 'signal <-> no signal' transitions in user mode driver.
+ - Fix bug when opening second device in user mode driver.
+   
+   29/07/2010 DC
+ - Update config script for kernels which need to include "include/generated/autoconf.h".
+ - Uninit the user mode driver when service process ends.
+ - User mode service open/closes log file.
+ - Driver uninitialised on service close.
+ - Update includes for TASK_* defines in later kernels.
+   
+   02/08/2010 DC
+ - Better error checking on memory allocation (mainly vmalloc).
+   Release v0.1.2
+
+   02/11/2010 DC
+ - Fixed limit in scatter gather entries [gst-launch failed with default output buffer of 2046x2046].
+ - Update install script for accepting the Datapath Limited Software license and auto-accept silent(ish) install.
+ - Updated to latest common source base.
+ - Updated for rev37 firmware.
+ - Added a release script.
+ 
+   03/11/2010 DC
+ - Handle "Signal<-->No Signal" transitions correctly for MMAP'd IO.
+ - Add ERRATA to installation package.
+ - Add VERSION to installation package.
+   Release v0.1.3
+   
+   11/11/2010 DC
+ - Rename user dma sg structure to its proper name.
+ - Add KernelVzalloc function.
+ - Use vmalloc for read/steam buffer structure allocation.
+ - Updated COMPATIBILITY (Ubuntu 10.4 x86 and CentOS 5.5).
+   Release v0.1.4
+   
+   15/11/2010 DC
+ - Use variable length array of Windows SG list.
+ - Add gst-launch help txt.
+ 
+   18/11/2010 DC
+ - Update usage of signal notification event.
+ - Create top-level build script.
+ - Added uninstall script and updated documentation.
+ - Update ERRATA.
+ 
+   22/11/2010 DC
+ - Update Makefiles for SuSE /lib/modules and kernel source layout.
+ - Update load scripts for use with unsupported modules 'modprobe'.
+ - Grey-scale buffer is 8bpp not 16bpp.
+ - Update COMPATIBILITY (SLES 11 SP1 x86).
+ 
+   02/12/2010 DC
+ - Update bespoke API to deliver number of Vision devices in the system, video4linux device names (ie. /dev/video0) per device and basic device parameters (input source characteristics and brightness/contrast etc).
+ - Tidy up control API header.
+
+   03/12/2010 DC
+ - Fix bug when allocating more than 128kB using kmalloc in 64-bit CentOS.
+   Release v0.1.5
+   
+   06/12/2010 DC
+ - Add support for Y8 (same as fourcc 'GREY') in V4L wrapper.
+ - Add sample code for querying number of Vision devices, input source characteristics and device parameters.
+   
+   08/12/2010 DC
+ - Add Utils sample source into the install package.
+ - Add support for exporting the videodev base number.  Can be set by modifying options in modprobe.conf.
+   Release v0.1.6
+   
+   08/12/2010 DC
+ - Add doxygen comments to Utils source and shared header files.  Add docs folder in the Utils directory.  Package up and include in the installation package.
+   
+   10/12/2010 DC
+ - Use core driver source to init the capture buffer with cyan/blue (read io) or red/magenta (mmap io).
+ - Remove legacy code to retrieve the minor number to look up the device pointer.
+ - Use video_device dev or parent element to set correct registration with the linux subsystem.  'lshal' command then correctly reports the Vision devices as video4linux subsystem devices.
+ - Modify open routine to allow sysfs subsystem to open driver and query capabilities.
+   
+   15/12/2010 DC
+ - Preparation for VHDL flash utility.
+ - Ioctl reqbufs with a count < 1 is now invalid.
+ - Changes to stream buffer handling to allow dynamic output buffer characteristics.  Xawtv resize window send S_FMT ioctl with new output buffer size (re mmap'd etc).
+ 
+   16/12/2010 DC
+   Release v0.1.7
+ 
+   25/03/2011 DC
+ - OEM tagged sources.
+   Release v0.1.8
+
+   08/04/2011
+ - Use sed to perform dos to unix editing on scripts.
+ - Add sanity checks into install script.
+   Add version info into install script.
+   Modify config script to extend scope of required kernel headers.
+   Release v0.1.9
+
+   09/04/2011 DC
+ - Add Flash upgrade utility and move to latest fw (rev38).
+ - Add capture sample source.
+ - Protect the capture q data structure.
+ - Support use of VIDIOC_S_PARM to set the captured frame rate. 
+   Release beta v0.2.0
+ 
+   18/05/2011 DC
+ - Handle new hardware - VisionRGB-E2S
+ - Support 8-bit packed R, G and B pixel formats.
+
+   19/05/2011 DC
+ - Use latest fw (rev39).
+ 
+   06/06/2011 DC
+ - Fix deadlock in split driver.
+   Split driver upgrades VHDL.
+   
+   08/06/2011 DC
+ - Add cropping functionality (VIDIOC_CROPCAP, VIDIOC_G_CROP and
+   VIDIOC_S_CROP).
+ - Update capture sample source to implement cropping ioctl.
+
+   15/06/2011 DC
+ - Fixed close capture crash, use of freed memory.
+ - Use new version numbering (inline with Windows Vision
+   driver).
+   Release v6.0.5.0 
+   
+   21/06/2011 DC
+ - New memory prints.
+ - Generate kernel archive before split archive.
+ - User mode service init's driver correctly to stop control device access.
+ 
+   22/06/2011 DC
+ - Split driver supports device enumeration and the ability to obtain device
+   parameters.
+   Release beta v6.0.5.1
+   
+   30/06/2011 DC
+ - All ioctls called on the control device return -EINVAL. 
+ - Add support for setting RGB colour balance.
+ 
+   19/07/2011 DC
+ - Fix 64-bit OS issue with capture using split driver.
+ - Support V4L2 USERPTR IO.
+ - Use latest fw (rev40).
+   Release beta v6.0.5.2
+   
+   21/07/2011 DC
+ - Install User Mode service and startup script.
+ - Fix uninstall script.
+   Release v6.0.7.0
+   
+   03/08/2011 DC
+ - Bring up to date with core source.
+ 
+   04/08/2011 DC
+ - Handle new hardware - VisionRGB-E1S, VisionSD4+1S,
+   VisionDVI-DL and VisionSDI2
+ - Include new device firmware: dgc153fw.bin and dgc154fw.bin.
+   
+   08/08/2011 DC
+ - Set field parameter in vid cap fmt to indicate if vid source is
+   interlaced.  Reject any V4L2 interlace setting which we don't
+   support.
+   
+   09/08/2011 DC
+ - Install scripts launch proper User Mode service via init.d script.
+ - Existing installation is correctly uninstalled (using uninstall
+   script) before new install is performed.
+   Release v6.0.9.0
+   
+   17/08/2011 DC
+ - Correctly setup PCI vendor ID for probing VisionRGB-E1S.
+   Release v6.0.10.0
+
+   08/09/2011 DC
+ - Fix bug when setting up cropping rect.
+    
+   22/09/2011 DC
+ - Add beta Vision capture application into install package,
+   installed into /usr/local/Vision/ 
+   Release v6.1.0.0
+   
+   28/09/2011 DC
+ - Finalise changes in Vision capture application.
+     * Handle mode changes
+   Release beta v6.1.0.1
+   
+   29/09/2011 DC
+ - Fix spinlock acquire/release for SUSE SLERT x86_64.
+ - Modify install/uninstall scripts with respect to adding rgb133.sample.conf
+   to allow 'unsupported' modules to be loaded at startup time.
+   Release beta v6.1.0.2
+   
+   05/10/2011 DC
+ - Repackage new install scripts.
+ - Modify Vision config app to check for libv4l2.so as
+   well as Qt.
+   Release beta v6.1.0.3
+   
+   07/10/2011 DC
+ - Modify get device parms call to use only the type of parms required.
+   Caused lockup on CentOS v5.5.
+ - Fix broken sample source, Enumerate.c.
+   Release v6.1.1.0
+   
+   11/10/2011 DC
+ - Fix use of uninitialised return value in user mode service code.
+ - Use latest common sources.
+   Release beta v6.1.1.1
+   
+   13/10/2011 DC
+ - Fix issue with stack size usage (re: CentOS v5.5 32-bit), convert stack
+   allocated locals to heap allocated.  Max contiguous alloc of 128kb in
+   2.6.18 kernel.
+   Release beta v6.1.1.2
+   
+   14/10/2011 DC
+ - Fix bug with device params min/max values.
+ - Add diagnostics harvesting script.
+   Release beta v6.1.1.3
+
+   17/10/2011 DC
+ - Clear down buffer queue flags on read io call
+ 
+   20/10/2011 DC
+ - Enhance progress indication in install/uninstall scripts.
+
+   24/10/2011 DC
+ - Commands in install scripts were being backgrounded rather than run in the
+   forground, causing issues at least comparing/upgrading flash images.
+ - Turn off coloured buffer initialisation (for bad DMA detection).  Add
+   defined code to allow it to be turned on if necessary.
+
+   25/10/2011 DC
+ - Enhance diagnostics script, more module info, process info and OS info.   
+   Release v6.1.1.4
+   
+   03/11/2011 DC
+ - 'find' in install/uninstall scripts should search explicit directories or
+   the current directory only.  Avoids multiple find hits if driver packages are
+   inflated inside an existing driver package directory.
+ - Add command to flip (vertically) the capture data (performed in hardware).
+   Use v4l2 vflip control to set/clear flipping.
+   Release beta v6.1.1.5
+   
+   04/11/2011 DC
+ - Implement device ordering, use app to create ordered symbolic links pointing
+   to the real video4linux device nodes.
+   Release beta v6.1.2.0
+   
+   14/11/2011 DC
+ - Logic to calculate required frame rate is upside down, invert.  Values for
+   timeperframe represent time between frames in seconds (as fraction) not
+   rate in fps.
+   Release beta v6.1.2.1
+   
+   15/11/2011 DC
+ - After transition to no signal, output buffer width is set to zero which causes
+   v4l1_compat to perform a divide by zero.  Driver now reinstates the original
+   default capture buffer width.
+ - Bring up to date with core driver and firmware.
+   Release beta v6.1.3.0
+   
+   16/11/2011
+ - Compile with -Os to avoid compilation errors in 2.6.40 kernel and later.
+   Release v6.1.3.1
+
+   17/11/2011
+ - Add support for 3.0 kernel in install scripts.
+   Release beta v6.1.3.2
+   
+   19/12/2011
+ - Don't report V4L2 controls if input is not a valid signal.
+ - Don't deliver the first requested frame, it's always a mode change or no signal
+   frame (causes at least one default coloured frame to be delivered).
+ - RGB133Links scripts is now compatible with SLES 11 SP1 (inc SLERTE).
+   Use latest firmware.
+   Release v6.1.5.0
+   
+   20/12/2011
+ - Return -EINVAL when getting/setting ctrl values using the vidioc_g_ctrl/vidioc_s_ctrl
+   ioctls for controls which are disabled due to input type.
+   
+   21/12/2011
+ - Correctly initialise USERPTR IO buffers; no signal is green and signal is yellow.
+ - Show the no signal text for USERPTR IO buffers.
+ 
+   04/01/2012
+ - Upgrade to using latest rev42 flash image.
+ - Fix typo for failure to set horizontal size control.
+
+   19/01/2012
+ - Support 2.6.41 kernel (Fedora 15), deprecated DMA bit mask macros removed.
+   Release 6.2.3.5
+
+   24/01/2012
+ - Initialise EventPort event to FALSE to guarentee that wake-up handshaking has completed
+   before equilisation events are sent to the firmware.
+ - Dynamically allocate limits for width/height in the VIDIOC_S_FMT ioctl.
+ 
+   25/01/2012
+ - Initialise Equilisation setting on first open of device.
+   Release 6.2.4
+   
+   15/02/2012
+ - Support V4L2 interlace setting get/set.
+ - Provide module load parameter to control default interlacing behaviour.
+   Release 6.2.5
+   
+   29/02/2012
+ - Update min/max/def on signal type change.
+   Release 6.2.6
+
+   29/03/2012 DMJ
+ - Stop controls being set with out of range values
+ - Return codes from get/set control indicate failure/success correctly
+ - Incorporate rev43 flash image for more reliable DVI signal detection
+ 
+   12/04/2012 DC
+ - Stop default interlacing setting being applied to progressive inputs.
+ 
+   13/04/2012 DC
+ - New module load parameter for flipping the R and B bytes of 24/32-bit RGB data.
+ 
+   16/04/2012 DC
+ - Add module load parameter to limit the maximum analog video timings (only HorPos) to start with.
+ 
+   17/04/2012 DC
+ - Disable relavent controls for VisionSDI2 and VisionDVI-DL cards.
+   Release 6.3.5
+   
+   30/04/2012 DC
+ - Reject VIDIOC_S_PARM calls where the timeperframe denominator is 0.
+ - Only apply flipped RGB CSC matricies to RGB24/RGB32 (not YUV pixel formats).
+   
+   02/05/2012 DC
+ - Fix bug in length of final scatter-gather entry for capture buffers which are not an exact multiple of 4k pages.
+ 
+   03/05/2012 DC
+ - Add ioctls (VIDIOC_ENUM_FRAMESIZES & VIDIOC_ENUM_FRAMEINTERVAL) to support gstreamer ability to set the framerate.
+   
+   10/05/2012 DC
+ - Fix deadlock for 64-bit OS's.
+ - RGB flip is now capture specific.
+ 
+   23/05/2012 DC
+ - Fix bug for VisionSD8, VisionSD4+1 and VisionSD4+1S cards capturing any non-zero channels.
+ - Fix compilation of 'Capture' sample source on RHEL.
+   Release 6.3.7
+   
+   13/06/2012 DC
+ - Add preliminary hardware timestamps.
+ - Add module load parameters for adjustment of the VIDIOC_ENUM_FRAMESIZES & VIDIOC_FRAMEINTERVALS ioctls.  For compatibility with Skype.
+ 
+   20/06/2012 DC
+ - Add implementation of hardware timestamps and module load parameter to control output to system log.
+ 
+   22/06/2012 DC
+ - Add DEBUG docs document.  Add executable for dynamically modifying the debug level.
+ - Add CONFIG docs document.  Add sample rgb133.sample.conf module load config file.
+   
+   29/06/2012 DC
+ - Fix bug in max number of SG entries.
+   Release 6.3.9
+ 
+   18/07/2012 DC
+ - Fix bug in Capture sample source.
+ - Return hardware timestamp out of VIDIOC_DQBUF ioctl.
+ - Fix interlace mode detect status output.
+ - Add dynamic debug level.
+ - Add diagnostics to video mode handshake, AOI and Scaling parameter setting.
+ - Fix bug in number of SG entries. 
+   Release 6.3.11
+   
+   22/08/2012 DC
+ - Correct SG table length fix from DMJ
+ - Expand interlace type request.
+ - Fix config script for Ubuntu 12.10 (3.5 kernel)
+ 
+   30/08/2012 DC
+ - Correct bug in returning the sequence number and field ID.
+ - Correct usage of msleep/mdelay in rgb133time.h for RGB133WAIT macro.
+ - qctrl array is now device centric not module centric so that controls are stored per device.
+ 
+   04/09/2012 DC
+ - Add module load parameter to enable offset of Vertical Porches for analog GTF modes.
+   
+   07/09/2012 DC
+ - Fix bug in RGB133Links apllication for adding a device to the start of the list.
+   Release 6.3.14
+ 
+   11/09/2012 DC
+ - Dump video timings on intial VIDIOC_S_FMT ioctl and every subsequent mode change.
+   Release 6.3.15
+   
+   17/09/2012 DC
+ - Add support for VisionAV.
+ 
+   19/09/2012 DC
+ - Remove virtual memory free from within atomic context (post DMA IRQ).
+
+   26/09/2012 DC
+ - Fix bug in ptr arithmetic for invalid signal text drawing (32bpp pixel formats).
+   Release 6.3.16
+ 
+   05/10/2012 DC
+ - Update firmware for VisionAV.
+ - Report detected and current video timings.
+   Release 6.3.17
+   Release 6.3.18
+   
+   05/11/2012 DC
+ - Update to latest firmware and flash (rev44).  Includes fixes for multi-channel registers on the VisionSD8.
+ 
+   21/11/2012 DC
+ - Fix compilation for up to 3.6.6 kernel.
+ - Fix bug in install script (affected help message only).
+   
+   25/10/2012 DC
+ - Add multi-buffer support.
+ - Remove split User/Kernel Mode driver support.
+ 
+   07/12/2012 DC
+ - Fix Flash app for real offsets.
+ - Extended CONFIG and rgb133.sample.conf files to include descriptions and examples for all relevant options.
+   Release 7.0.3
+
+   13/12/2012 DC
+ - Update flash image, rev45.
+ 
+   03/01/2013 DC
+ - Fix structure size bug for PAE kernels.
+ - Update to latest firmware and flash (rev45).
+   Release 7.1.0
+   
+   28/02/2013 DC
+ - Implement multi-v4l2 device architecture, single v4l2 device per input.
+     * Support for device enumeration.
+     * Support for video capture.
+     * Support for Vision app.
+     * Support for Flash app.
+     
+   01/03/2013 DC
+ - Update to latest firmware and flash (rev46).
+ 
+   04/03/2013 DC
+ - Requeue buffers which have been DMA'd to, but not yet dequeued, when transitioning from "No signal" to "Signal".
+   Release 7.1.4
+    
+   02/04/2013 DC
+ - Print module load options.
+ - Correct documentation for exposing all inputs as V4L2 device nodes.
+ - Only wait for DMA in VIDIOC_DQBUF if there are ACTIVE DMA requests.
+ - Always return one input (index zero) for exposed input captures from the VIDIOC_ENUM_INPUT ioctl.
+ 
+   04/04/2013 DC
+ - Add module load paramters output.
+ - Add module load parameter for FPS output.
+ - Correct usage of index and channel number in VIDIOC_ENUM_INPUT.
+   Release beta 7.1.6
+   
+   05/04/2013 DC
+ - Make coloured buffers a module load parameter.
+ - Timeout in VIDIOC_DQBUF now returns -EINVAL.
+ - Handle signal changes in capturing clients which are paused. 
+ - Control device has minor number assigned.
+ 
+   01/05/2013 DC
+ - Remove uninitialised value in VIDIOC_DQBUF ioctl.
+ - Enhance diagnostics script.
+ 
+   09/05/2013 DC
+ - Fix driver build for Ubuntu 13.04.
+     - Config script handles 'uapi' include paths.
+     - Config script tests for private VIDIOC_G_FMT and VM_RESERVED.
+ 
+   21/05/2013 DJ
+ - Fix a bug where a parameter change causes a capture to go through a timeout.
+   Release beta 7.2.0
+ 
+   17/06/2013 DC
+ - Implement vidioc_default ioctl to handle private VIDIOC_G_FMT calls to retrieve source resolution.
+ - Use latest firmware and flash (rev48) images.
+   Release 7.3.2
+   
+   28/06/2013 DC
+ - Signal transitions are used on a per channel basis.
+ - V4L2 controls are stored on a per channel basis.
+ - Flash133 handles new hardware.
+ 
+   03/07/2013 DC
+ - Ammend 'discovery' sample source to compile when capability flags are not defined in the kernel headers.
+ - Add VIDIOC_G_FMT sample source for retrieving the 
+ - Add sample 'GetFormat' source to Utils.
+ - VIDIOC_DEFAULT ioctl is now permanently enabled where appropriate.
+ - Fix VIDIOC_G_FMT_PRIVATE for RHEL5 and CentOS 5.
+ - Multi-buffer auto capture is aborted if the capture is being closed.
+ - 'struct file' private data assigned only when open syscall is about to return correctly.  Private data field is clear during the close syscall.
+ - Config script handles V4L2 ioctl directory correctly.
+ - Diagnostics script harvests config header file.
+ 
+   09/07/2013 DC
+ - Capture sample source can now loop (close/reopen) after a number of frames.
+ - Non-sysfs open syscall failures are detected correctly.
+ - Second use case for closing while multi-buffer auto-capture is scheduling a new DMA fixed.
+      - Close(...) stops streaming IO before waiting for last DMA.
+      
+   11/07/2012 DC
+ - Capture sample source calls VIDIOC_STREAMOFF before calling 'close(...)'.
+ - Buffers are dequeued correctly after stopping streaming by the VIDIOC_DQBUF ioctl.
+ - Don't use DADA table to retrieve capture number, use member from capture handle returned after capture open call.
+ 
+   15/07/2013 DC
+ - Add ForceDetect application and driver support.  Forces detection on specific input to be 'Default', 'Analogue' only or 'DVI' only.
+   Release 7.3.3
+   
+   23/07/2013 DC
+ - Applications can use the VIDIOC_REQBUFS ioctl with 'count' equal to zero to clear any buffers and stop streaming.
+      - After a VIDIOC_REQBUFS call a call to VIDIOC_QUERYBUF will return an error.
+ - Buffer status reset correctly.
+ - VIDIOC_QBUF only requests a DMA when there are no active buffers.
+ 
+   30/07/2013 DC
+ - Add ForceDetect into V4L2 Control interface (query, get and set).
+ - Add method to scale according to predefined aspect ratio.
+      - Set globally to all inputs via module load variable.
+      - Set for individual inputs via bespoke ioctl.
+      - Add into V4L2 Control interface (query, get and set). 
+ - Add method to set scaling behaviour (Default, Up Only, Down Only and None).
+      - Set globally to all inputs via module load variable.
+      - Set for individual inputs via bespoke ioctl.
+      - Add into V4L2 Control interface (query, get and set).
+      
+   31/08/2013 DC
+ - Update sample modprobe config script.
+ - Update CONFIG doc.
+ 
+   01/08/2013 DC
+ - Add Horizontal/Vertical Timings into V4L2 Control interface (query, get and set).
+ - Extend invalidate buffers when scaling changes but when the offset remains the same.
+ 
+   02/08/2013 DC
+ - Fix bug when aspect ratio scaling generated an image width (in bytes) which is not 4-byte aligned.
+ - Fix bug when re-pitching the buffer allowing full rate captures.
+ - Full support for VisionHD4, VisionAV-SDI and VisionAV-HD.
+ - Complete active buffers when we transition to no signal.
+ 
+   03/08/2013 DC
+ - Protect against transitioning to no signal after queueing a DMA.
+ - Fix V4L2 setting of vertical timing control.
+ 
+   07/08/2013 DC
+ - Fix bug where scaled number of lines is odd but equals the number of lines in the capture.
+   
+   08/08/2013 DC
+ - Fix capture buffer corruption issue where capture buffer has odd number of lines and the scaled buffer has a lower but still odd number of lines.
+ - Use redetected values after notification of paramters changed.
+ 
+   13/08/2013 DC
+ - Initial offset into capture buffer must be 4-byte aligned.
+   Release 7.3.4
+   
+   20/08/2013 DC
+ - Handle dequeuing buffers before VIDIOC_STREAMOFF is called.
+ 
+   21/08/2013 DC
+ - VIDIOC_REQBUFs ioctl fails if the VIDIOC_S_FMT ioctl has not been called previously.
+ 
+   20/09/2013 DC
+ - Get/Set all current device parameters when opening a new device handle.
+ - Use latest firmware and flash (rev49) images.
+   Release 7.4.0
+
+   03/10/2013 DC/DMJ
+ - Add EDID editor.
+ - Add basic RGBHelper for diagnostics.
+ - Protect against bad cropping rects being set in the core driver.
+ - Use latest firmware.
+ 
+   10/10/2013 DC
+ - Correct the (De)Interlacing value returned from the VIDIOC_G_FMT ioctl.
+
+   11/10/2013 DC
+ - Move remaining V4L2 functionality to open source wrapper.
+   
+   22/10/2013 DC
+ - Pad Flash image structure so the 'data' is 64-bit aligned.
+ - Print verbose message for open failure due to max clients or invalid channel.
+ - Expand Enumerate sample source to include 'Interlaced', 'SDI' and 'DVI-DL' signal states.
+   
+   01/11/2013 DC
+ - Phase, Horizontal Position, Horizontal Size and Vertical Position controls initialised correctly.
+   Release 7.4.2
+   
+   25/11/2013 DC
+ - Update to latest firmware and flash image (rev50).
+   
+   28/11/2013 DC
+ - Default values for the Horizontal/Vertical Address Timings are now the detected values for valid signal inputs.
+ - All V4L2 control values persist even when no captures are running or all clients are closed.
+ 
+   04/12/2013 DC
+ - VIDIOC_QUERYCTRL icotl now updates the dynamic controls, ie those which are derived from the detected parameters.
+   
+   05/12/2013 DC
+ - Implement a timer to handle flipping and resetting the hardware tick count used in the generation of timestamps.
+
+   06/12/2013 DMJ
+ - Compile and install under Ubuntu 13.10.
+ 
+   10/12/2013 DC
+ - Correct IRQ handler declaration in pre 2.6.43 kernels.
+ - Handle parameters changed when no notification from firmware.
+   Release 7.5.0
+   
+ - 17/12/2013 DC
+   Correct the number of exposed inputs on the VisionHD4.
+   
+   19/12/2013 DC
+ - Correctly assign default cropping rect returned from the VIDIOC_CROPCAP ioctl.
+   
+   03/01/2014 DC
+ - Flash upgrade utility only checks against the InputOrdinal value rather than checking for a 'B' device.
+   
+   06/01/2014 DC
+ - Fix config script for cases where the kernel has the V4L2 default ioctl but does not use the 'unsigned int' extended prototype. 
+ 
+   13/01/2014 DC
+ - Do not pad flash image write structure for driver versions prior to v7.4.2. 
+   
+   05/02/2014 PG
+ - Correct CONFIG document detailing assignments of no signal message colour.
+ - Module load parameters for modifying 'no signal' text work correctly.
+ 
+   06/02/2014 PG
+ - Limits for V4L2 Phase control are initialised correctly.
+
+   12/02/2014 DC
+ - Add 1920x1200 50Hz CVT, CVT-RB and GTF modes into detect table.
+ 
+   14/02/2014 DC
+ - Fix bug in Edid editor so writing EDID can succeed.
+ - Set 'Out of Range' for analogue modes with a pixel clock greater than 170MHz on VisionAV family.
+     - Eg. 1920x1200 60Hz CVT/GTF.
+     
+   17/02/2014 DC
+ - Add module load parameter to globally set the detected colour domain.
+ - Implement V4L2 control for getting/setting the detected colour domain on a per input basis.
+   Release beta 7.5.1
+ 
+   19/02/2014 DC
+ - Add frame debug information and module load parameter.
+ 
+   24/02/2014 DC
+ - Add a module load parameter to allow HDCP sources to be captured for capture buffers of a maximum of an eighth of the width and an eighth of the height of the currently set cropping parameters.
+
+   28/02/2014 PG
+ - Add logic to initialize Controls on input change.  
+   Release beta 7.5.2
+   
+   05/03/2014
+   Release 7.6.0
+
+   17/03/2014 PG
+ - Get rid of Non-sequential TS messages on start/stop of capture
+ - Fix calculation of non-sequential timestamps for deinterlacing modes: Bob and Alternate, in order to print out error messages on frame drop whilst in those modes
+ - Get rid of excess Non-sequential Seq messages for Alternate deinterlacing mode
+
+   24/03/2014 DC
+ - Modification of the colour domain will trigger a dump of the current VDIF settings.
+ - Only attempt upgrading flash images if there is Datapath hardware present in the system.
+ 
+   31/03/2014 DC
+ - Update configuration script to support 3.13.x kernel in OpenSUSE 13.1.
+ 
+   01/04/2014 DC
+ - Fix structure alignment in capture handle.
+ 
+   02/04/2014 DC
+ - Correct error code returned from VIDIOC_ENUM_FRAMESIZES ioctl when using an index greater than zero because frame sizes type is continuous.
+
+   24/04/2014 PG
+ - For SDI input, add detection of an unrecognisable signal based on values of horizontal address time and vertical address time.
+ - Implement function CentreMultilineMessage() which enables drawing multiline messages on a capture display.
+ - Using the above function for drawing multiline messages, if the SDI input is detected as Unrecognisable, print out 3 additional lines with a series of informative quantities of the input signal.
+   
+   30/04/2014 PG
+ - For Video sources, add control of Overscan Cropping by disabling/enabling a module load parameter. 
+   
+   14/05/2014 PG
+ - Forbid the possibility to start a DMA if there already is an active buffer. One possible reason is to protect against applications which do not use poll().
+   
+   28/05/2014 PG
+ - Make Capture application work with new kernels for acquiring source format (add an option of a proprietary ioctl).
+ 
+   05/06/2014 PG
+ - Set the buffer length field of the v4l2 buffer structure to allow degueueing buffers with gst-launch-1.0.
+ - Fix the crash dump occurring on driver reload (control device destroyed more than once).
+ 
+   23/06/2014 DC
+ - Driver fills in appropriate size and length fields for return 'v4l2_buffer' for applications which only call the VIDIOC_G_FMT icotl before initialising buffers for STREAMING IO (MMAP & USERPTR).
+ - Dump video timings for clients calling the VIDIOC_STREAMON ioctl or performing READ IO.
+ - Set defaults for 'No Signal' case where application does not call vidioc_s_fmt ioctl.
+ 
+   29/08/2014 DC
+ - Fix return for timeperframe structure's denominator value after call to VIDIOC_G_PARM ioctl.
+
+   25/09/2014 PG
+ - Exclude control device from querying capabilities with VIDIOC_QUERYCAP ioctl.
+ 
+   21/10/2014 PG
+ - Fix script diag.sh so that it harvests all the diagnostic files irregardless of where the script is called from (this also solves the issue of the same origin for app Flash133).
+ 
+   24/10/2014 PG
+ - AUDIO: ALSA driver keeps track of created ALSA sound cards and removes accordingly at uninitialisation.
+ - CaptureAudio sample application can query and list ALSA capture and playback devices; it can also select the capture/playback device to open.  
+ 
+   29/10/2014 PG
+ - AUDIO: Remove the timer and some functions related to virtual ALSA driver - the driver now works with real hardware. 
+ 
+   10/11/2014 PG
+ - For USERPTR I/O, set state of a buffer to QUEUED once the entire setup process for queueing the buffer is complete (this fixes the issue of occasional DMA-related lock-ups with USERPTR I/O). 
+ 
+   11/11/2014 PG
+ - AUDIO: Add setting rate, channels, and format to hardware at the driver and at application level. Remove the rest of the virtual-driver-related code.
+   
+   18/11/2014 PG
+ - AUDIO: Modify build scripts, source and header files to allow doing package builds.
+   
+   09/01/2015 PG
+ - Fix the race condition between auto capture and capture close.
+ - AUDIO: Fix driver unload.
+ 
+   20/01/2015 PG
+ - Fix closing a capture when it may wait forever for CloseAllowed event if during the capture there was a transition from valid signal to bad signal.
+   
+   27/01/2015 PG
+ - AUDIO: Driver supports opening a capture in blocking mode (default mode for applications: arecord, gstreamer).
+
+   29/01/2015 PG
+ - AUDIO: Fix system crashes on certain combinations of audio and video capture open / close.
+ 
+   30/01/2015 PG
+ - AUDIO: ALSA gets notified by the core driver when new data is available to be captured. With this change, audio capture is much more efficient as ALSA middle layer may sleep between notifications (blocking mode).
+
+   20/02/2015 PG
+ - Handle macro PREPARE_WORK removed from kernel 3.15.
+ - AUDIO: handle new ALSA function for sound card registration: snd_card_new() which takes pci parent device as one of its arguments (function introduced by ALSA developers as part of work for modernising ALSA device structure).
+ - AUDIO: Fix ALSA devices numbering which enables PulseAudio to enumerate ALSA devices (needed to find a working profile by PulseAudio).
+   
+   27/02/2015 PG
+ - Add rgb133_diagnostics_mode to rgb133.conf, which allows gathering diagnostics with diag.sh under fault conditions.
+ - As part of gathering diagnostics, add new information on dada devices and their mappings to: installinfo.txt, sysinfo.txt. 
+ - In script diag.sh, get_rgbhelper_info() and get_edid_info() identify video capture devices by "dada" instead of "video", which narrows the search down to our devices.
+ 
+   04/03/2015 PG
+ - AUDIO: PulseAudio sources can now be used for capturing without noticeable sound artifacts: ALSA driver limits period size to half of the buffer size thus number of periods to 2.
+   (before, it was possible to set buffer size to various numbers by tweaking default values in the PulseAudio daemon's configuration file, and that way artifacts could be introduced to the captured sound).   
+ 
+   16/03/2015 PG
+ - AUDIO: Add mute and volume controls.
+ 
+   19/03/2015 PG
+ - Handle pre-processor macro __devinitdata not existing in older kernels headers.
+ 
+   01/04/2015 PG
+ - AUDIO: Handle issue with driver uninstall due to PulseAudio holding access to ALSA devices.
+ - AUDIO: Remove use of macro __devinitdata from ALSA control interface source files.
+    
+   21/04/2015 PG
+ - Add member count to KEVENT and employ it in .poll.
+ - Fix usage of CloseAllowed event so that it is set if we are starting DMA and there is bad signal. 
+
+   02/06/2015 PG
+ - Queue active buffers if poll timed out.
+ 
+   19/06/2015 PG
+ - Fix driver install under kernel 4.0.5.
+   Release beta 7.6.0 
+
+   30/06/2015 PG
+ - Add check for NULL pointer passed to function SndCardRemove.
+ - Fix function AudioInitialisePost for VisionSC-DP2.
+ 
+   03/07/2015 PG
+ - Add v4l2 node number at the end of names of digital audio devices for cards with multiple digital inputs.
+ 
+   06/07/2015 PG
+ - Add function KernelGetDeviceNodeNr to the kernel api set of functions.
+ 
+   15/07/2015 PG
+ - Add support for systemd service management.
+ 
+   21/07/2015 PG
+ - Fix usage of struct _KEVENT's member count in poll.
+   
+   05/08/2015 PG
+ - In rgb133_dqbuf, wait for MultiBuffer event instead of waiting for DMAIdle (buffers are ready to be dequeued once MultiBuffer is signalled).
+ - In rgb133_startdma, set MultiBuffer event on no signal. This fixes an unneeded wait for MultiBuffer in poll if there is a change from no signal to valid signal
+   after rgb133_startdma finishes and before poll starts.
+   
+   07/08/2015 PG
+ - Handle presence / absence of ioctl_lock in struct v4l2_device.
+ - Handle presence of either ioctl or unlocked_ioctl in struct v4l2_file_operations.
+   
+   18/09/2015 PG
+ - Modify macro for copying client data to firmware and add macro for copying data from firmware to host.
+   
+   02/11/2015 PG
+ - Protect against attempting to free the sound card twice
+   (the first time if SndCardMixerCreateNew fails, the second time at driver uninitialisation)
+   
+   11/11/2015 PG
+ - Add ALSA mixer and fix audio capture for SDI channel
+   
+   15/11/2015 PG
+ - Fix vma open and close for parallel access.
+   Release beta 7.9.0
+
+   17/11/2015 DC
+ - Update to Rev55 VHDL and corresponding firmwares.
+ 
+   19/11/2015 PG
+ - Apply post-merge changes required for 7.11 build.
+   Release 7.11.0
+   
+   25/01/2016 PG
+ - Handle function rdtsc() with no arguments in kernel 4.3.0 (driver now builds under Ubuntu 16.04).
+
+   29/04/2016 PG
+ - Add support for LiveStream.
+ 
+   05/05/2016 PG
+ - Fix audio cards naming.
+
+   06/05/2016 PG
+ - Fix Flash app vhdl version comparison for rev57 vhdl.
+ 
+   11/05/2016 PG
+ - Fix possible buffer overrun in VIDIOC_QUERYCAP.
+ 
+   22/06/2016 PG
+ - Add full range mode for YUV captures.
+ 
+   19/07/2016 PG
+ - Fix setting interlacing/deinterlacing behaviour on 64-bit systems.
+ 
+   29/07/2016 PG
+ - Update the Flash application for new flash file header type.
+ 
+   02/08/2016 PG
+ - Protect against requests to read 0 bytes in read system call.
+ 
+   03/08/2016 PG
+ - Fix reporting device firmware's year for years >=2016.
+ - Add names for SDI and Display Port inputs to read with VIDIOC_ENUMINPUT.
+ - Add force command line option in Flash app.
+ 
+   09/08/2016 PG
+ - Fix the case of dequeueing the same buffer twice on signal transition.
+ 
+   23/08/2016 PG
+ - Update EDID application to handle multi-channel devices.
+ 
+   31/08/2016 PG
+ - Neaten driver init code (fixes failed sysfs opens).
+ 
+   30/09/2016 PG
+ - Handle: deletion of page_cache_release, get_user_pages with 6 arguments, relocation of rdtsc 
+   (driver compiles under Ubuntu 16.10, kernel 4.8.0-14-generic).
+   
+   18/01/2017 PG
+ - Fix early driver open.
+ - Fix v4l2_device_caps test in configuration script.
+ 
+   20/01/2017 PG
+ - Fix Vision app trying to set a non word-divisible horizontal address time for no signal.
+ 
+   25/01/2017 PG
+ - Create a Vision installation package compatible with VisionLC driver.
+ 
+   08/02/2017 PG
+ - Fix vidioc_s_fmt for some resolutions and no signal detected at capture start.
+ 
+   13/02/2017 PG
+ - Fix timestamps for multiple dma buffers in use.
+ 
+   08/03/2017 PG
+ - Add config check for member name in union in struct v4l2_querymenu.
+ 
+   10/03/2017 PG
+ - Fix no signal timestamps.
+ 
+   03/05/2017 PG
+ - Fix drawing every no signal frame.
+ - Add config option for disabling no signal counter.
+
+   Release 7.14.0
+ 
+   19/06/2017 PG
+ - Update VHDL Flash to rev58.
+ - Add the following to VisionSC-DP2, VisionSC-HD4+, VisionSC-SDI4 cards:
+   Input Ganging as v4l2 control and as module load parameter.
+   YUV 4.2.0 3840x2160 60Hz (VisionSC-HD4+ card inputs 1 and 3).
+   10-bit pixel formats: Y410, RGB10.
+   YV12 pixel format.
+ - Add support for full range and studio range: RGB BT.601, RGB BT.709, RGB BT.2020, YUV BT.601, YUV BT.709, YUV BT.2020.
+ - Add convertion between full and studio RGB/YUV values (full range YUV/RGB is now default).
+ - Add reset Edid with Edid application.
+ - Fix timestamps for multiple dma buffers in use.
+ - Add config check for member name in union in struct v4l2_querymenu.
+ - Fix no signal timestamps.
+ - Fix driver installation against kernel 4.9.35.
+
+   Release 7.16.3
+   
+   11/09/2017 PG
+ - Enable driver installation under kernel 4.10.
+ - Fix service management for Ubuntu 14.04 (init over systemd).
+ 
+   29/09/2017 PG
+ - Fix signal transitioning and selecting candidate buffer to timestamp for READ IO.
+ 
+   30/10/2017 PG
+ - Fix occassional capture closes on signal transition for USERPTR IO.
+ 
+   19/12/2017 PG
+ - Enable driver installation under kernel 4.14.3.
+ 
+   22/12/2017 PG
+ - Fix systemd service management.
+   
+   15/01/2018 PG
+ - Add information on HDCP encrypted data in signal detection log.
+ - Add connector type name to struct v4l2_input name for VIDIOC_ENUMINPUT ioctl and in signal detection log.
+ - Add pixel format name (four character description) next to pixel format's hexadecimal code in VIDIOC_S_FMT log.
+ - Fix setting YVYU pixel format. 
+ 
+   21/03/2018 PG
+ - Add driver configuration option to disable non-v4l2 pixel formats.
+
+   12/07/2018 PG
+ - Implement new timers API changes to support kernel 4.15.
+ - Add support for Ubuntu 18.04 64-bit with kernel 4.15.0-24-generic.
+ - Fix kernel warning for control device not having any capabilities.
+ - Fix imperfect timestamps produced by the first few frames at No Signal.
+ - Drop support for kernels < 2.6.36 which do not favour concurrency-managed workqueues.
+
+   18/07/2018 PG
+ - Fix a memory leak at driver load / unload and a potential memory leak at capture start / stop.
+ 
+   20/07/2018 PG
+ - Fix a memory leak occurring at a mode change for user pointer I/O.
+ 
+   07/08/2018 PG
+ - Add support for the VisionSC-UHD2 capture card (include new device firmware: DGC214FW.BIN).
+ - Change names to have all letters capital for the following device firmwares: DGC133FW.BIN, DGC153FW.BIN, DGC154FW.BIN, DGC159FW.BIN.
+ 
+   30/08/2018 PG
+ - Fix a bug which sometimes allowed erroneous channel open at driver initialisation (for example, at boot time).
+ 
+   06/09/2018 PG
+ - Add module load configurations and V4L2 controls for forcing the following colour domains: Full Range RGB BT.601, 
+   Studio Range RGB BT.601, Full Range RGB BT.709, Studio Range RGB BT.709, Full Range RGB BT.2020, Studio Range RGB BT.2020, 
+   Full Range YUV BT.601, Studio Range YUV BT.601, Full Range YUV BT.709, Studio Range YUV BT.709, Full Range YUV BT.2020, 
+   Studio Range YUV BT.2020.
+   
+   21/11/2018 PG
+ - Add a more detailed information detected signal type in DetectMode kernel log notification:
+   Analog 5 Wires, Analog 4 Wires, Analog Sync On Green,
+   VIDEO, NTSC-M, NTSC-J, NTSC 4.43, NTSC50, PAL BGHI, PAL-M, PAL-CN, PAL-60, SECAM,
+   SDI, SDI SD, SDI HD, SDI HD DL, SDI 3GA, SDI 3GA DL, SDI 3GB DS, SDI 3GB STEREO,
+   DisplayPort, HDCP Encrypted DisplayPort, DisplayPort FS Stereo, HDCP Encrypted DisplayPort FS Stereo,
+   HDMI, HDCP Encrypted HDMI, HDMI RGB 4:4:4, HDCP Encrypted HDMI RGB 4:4:4, HDMI YUV 4:2:2, HDCP Encrypted HDMI YUV 4:2:2,
+   HDMI YUV 4:4:4, HDCP Encrypted HDMI YUV 4:4:4, HDMI YUV 4:2:0, HDCP Encrypted HDMI YUV 4:2:0,
+   DVI, HDCP Encrypted DVI, DVI YUV 4:2:0, HDCP Encrypted DVI YUV 4:2:0, DVI YUV 4:4:4, HDCP Encrypted DVI YUV 4:4:4,
+   DVI YUV 4:2:2, HDCP Encrypted DVI YUV 4:2:2, DVI RGB 4:4:4, HDCP Encrypted DVI RGB 4:4:4,
+   Dual Link DVI, HDCP Encrypted Dual Link DVI, Dual Link DVI YUV 4:2:0, HDCP Encrypted Dual Link DVI YUV 4:2:0,
+   Dual Link DVI YUV 4:4:4, HDCP Encrypted Dual Link DVI YUV 4:4:4, Dual Link DVI YUV 4:2:2, HDCP Encrypted Dual Link DVI YUV 4:2:2,
+   Dual Link DVI RGB 4:4:4, HDCP Encrypted Dual Link DVI RGB 4:4:4.
+ - Fix occasional crashes (memory violation) happening on mode change [B# 23680].
+ - VHDL Flash Versions:
+      VisionSC-UHD2 - Rev62 22nd November 2018
+      VisionSC-HD4+ - Rev62 22nd November 2018
+      VisionSC-DP2 - Rev58.1 20th February 2018
+      VisionSC-SDI4, VisionHD4, VisionAV, VisionAV-HD, VisionAV-SDI,
+      VisionDVI-DL, VisionSDI2, VisionRGB-E1, VisionRGB-E1S, VisionRGB-E2, VisionRGB-E2S,
+      VisionSD4+1, VisionSD4+1S, and VisionSD8 - Rev58.0 8th May 2017
+
+   Release 7.19.0
+
+   05/11/2019 PG
+ - Add new module load options to globally configure the following audio settings:
+   digital mute, analog mute, analog balanced volume, analog unbalanced volume.
+   Please note that the module load options listed above are applied to devices during the initialisation of audio interfaces. 
+   Once the ALSA controls have been created, those settings may be overwritten which will occur when there is an active service manager.
+   For example, alsa-restore.service would normally read the saved state from a file (for instance from /var/lib/alsa/asound.state) on boot
+   and set the ALSA controls with the obtained values thus overwriting the audio module load options.
+   Therefore, it is advised to use either the audio module options listed above or the service manager (as mutually exclusive mechanisms).
+ - Fix an issue that could result in a capture freezing when closing [B# 31335].
+ - Add support for kernel v4.12.14-6-rt.
+ - Act on snd_pcm_lib_preallocate_pages_for_all returning a value (support kernel v3.10.0-1062.el7).
+ - VHDL Flash Versions:
+      VisionSC-UHD2 - Rev63 27th June 2019
+      VisionSC-HD4+ - Rev63 27th June 2019
+      VisionSC-DP2 - Rev63 27th June 2019
+      VisionSC-SDI4 - Rev63 27th June 2019
+      VisionHD4, VisionAV, VisionAV-HD, VisionAV-SDI,
+      VisionDVI-DL, VisionSDI2, VisionRGB-E1, VisionRGB-E1S, VisionRGB-E2, VisionRGB-E2S,
+      VisionSD4+1, VisionSD4+1S, and VisionSD8 - Rev58.0 8th May 2017
+ 
+   Release 7.20.1
+   
+   12/02/2020 PG
+ - Act on removal of do_gettimeofday and on macro access_ok with 2 arguments in kernels >= v5.0.0.
+ 
+   04/06/2020 PG
+ - Add support for SLES v12 SP5 with real time kernel 4.12.14-10.5-rt.
+ - Fix erroneous memory access with preempt_enable, preempt_disable [B# 42437].
+
+   09/06/2020 PG
+ - Expand the VIDIOC_ENUM_INPUT V4L2 ioctl to fill member 'name' of struct v4l2_input with a more detailed description
+   on the detected mode in the following form: 
+   'detected_mode (physical_connector_type)'.
+ - VHDL Flash Versions:
+      VisionSC-UHD2 - Rev63 27th June 2019
+      VisionSC-HD4+ - Rev63 27th June 2019
+      VisionSC-DP2 - Rev63 27th June 2019
+      VisionSC-SDI4 - Rev63 27th June 2019
+      VisionHD4, VisionAV, VisionAV-HD, VisionAV-SDI,
+      VisionDVI-DL, VisionSDI2, VisionRGB-E1, VisionRGB-E1S, VisionRGB-E2, VisionRGB-E2S,
+      VisionSD4+1, VisionSD4+1S, and VisionSD8 - Rev58.0 8th May 2017
+
+   Release 7.20.3
+
+   19/10/2020 PG
+ - Add implementation of struct vm_fault's fault handler returning type vm_fault_t.
+
+   26/10/2020 PG
+ - Add support for V4L2 ioctls: VIDIOC_G_SELECTION, VIDIOC_S_SELECTION which extend the cropping, composing
+   and scaling functionality.
+ - Update the Capture sample source and the Vision sample application to implement the new ioctls.
+ - Update kernel log prints with information on the crop and compose rectangles in the following form:
+   Crop Rect: left, top, width, height;
+   Compose Rect: left, top, width, height.
+
+   28/10/2020 PG
+ - Resolve ./bin/rgb* and ./bin/dgc* archives to the '.o' extensions in order to fix linkage in newer kernels (>= 4.20.0).
+
+   04/12/2020 PG
+ - Update the sources of Vision Sample Application to Qt5; create the project file vw.pro.
+ - Fix bug for the VIDIOC_ENUM_INPUT ioctl which resulted in member .name of struct v4l2_input 
+   being filled with the same string across all channels of the queried video device [B# 53660].
+
+   17/12/2020 PG
+ - Add support for Ubuntu 20.04 64-bit with kernel 5.4.0-58-generic.
+   Update COMPATIBILITY (Ubuntu 20.04 64-bit). 
+ - Release the Vision Sample Application as source code.
+   Add the sources, project file and documentation of the sample application to:
+      ./apps/Vision
+   Add the configuration generator script as:
+      ./scripts/vwconfig.sh
+   Add optional installation of the sample application to the driver installation script install.sh.
+ - Add support for custom-defined image composition within the capture buffer
+   which extends the V4L2 composing functionality to apply the V4L2_SEL_TGT_COMPOSE target.
+ - Move utilities in the driver package from: ./utils to ./apps/utils.
+ - VHDL Flash Versions:
+      VisionSC-UHD2 - Rev63 27th June 2019
+      VisionSC-HD4+ - Rev63 27th June 2019
+      VisionSC-DP2 - Rev63 27th June 2019
+      VisionSC-SDI4 - Rev63 27th June 2019
+      VisionHD4, VisionAV, VisionAV-HD, VisionAV-SDI,
+      VisionDVI-DL, VisionSDI2, VisionRGB-E1, VisionRGB-E1S, VisionRGB-E2, VisionRGB-E2S,
+      VisionSD4+1, VisionSD4+1S, and VisionSD8 - Rev58.0 8th May 2017
+
+   Release 7.21.0
+
+   27/09/2021 PG
+ - Add support for Ubuntu 20.04.2 LTS 64-bit with kernel 5.8.0-41-generic.
+   Update COMPATIBILITY (Ubuntu 20.04.2 LTS 64-bit).
+ - Add support for Ubuntu 20.04.3 LTS 64-bit with kernel 5.11.0-36-generic.
+   Update COMPATIBILITY (Ubuntu 20.04.3 LTS 64-bit).
+ - Add config script tests for:
+     * uapi path struct timeval removed from kernel space.
+     * new V4L2 device node type enumeration: VFL_TYPE_VIDEO.
+     * semaphore in struct mm_struct renamed from mmap_sem to mmap_lock.
+     * snd pcm get page fault callback not referred and removed.
+ - Fix the bug where the image may be misplaced in the capture buffer at fixed aspect ratio [B# 68121].
+ - Fix the bug where the image may be miscomposed for a new detected source [B# 68791].
+ - Fix include path in the utils' Makefile.
+ - VHDL Flash Versions:
+      VisionSC-UHD2 - Rev63 27th June 2019
+      VisionSC-HD4+ - Rev63 27th June 2019
+      VisionSC-DP2 - Rev63 27th June 2019
+      VisionSC-SDI4 - Rev63 27th June 2019
+      VisionHD4, VisionAV, VisionAV-HD, VisionAV-SDI,
+      VisionDVI-DL, VisionSDI2, VisionRGB-E1, VisionRGB-E1S, VisionRGB-E2, VisionRGB-E2S,
+      VisionSD4+1, VisionSD4+1S, and VisionSD8 - Rev58.0 8th May 2017
+
+   Release 7.22.0
+
+   22/02/2022 PG
+ - Implement OSAPI layer with Linux abstractions of common types and functions.
+   Add new files to the driver package: OSAPI.c, OSAPI.h, OSAPI_TYPES.h.
+ - Fix race condition in OSWaitForSingleObject which resulted in more than one command
+   being sent to the firmware simultaneously [B# 69522].
+
+   Release 7.27.0
+
+   06/10/2022 PG
+ - Add support for crypto-less capture cards.
+
+   21/10/2022 PG
+ - Add support for Ubuntu 22.04.1 LTS 64-bit with kernel 5.15.0-53-generic.
+   Update COMPATIBILITY (Ubuntu 22.04.1 LTS 64-bit).
+ - Add support for Ubuntu 20.04.5 LTS 64-bit with kernel 5.15.0-46-generic.
+   Update COMPATIBILITY (Ubuntu 20.04.5 LTS 64-bit).
+ - Change names to have all letters capital for the VHDL Flash binary FLASHIMG133.BIN [T# 85334].
+ - Include device firmware file DGC133FW25.BIN to bring driver package up to date with core driver.
+ - VHDL Flash Versions:
+      VisionSC-UHD2 - Rev66 21st March 2022
+      VisionSC-HD4+ - Rev63 27th June 2019
+      VisionSC-DP2 - Rev64 15th May 2021
+      VisionSC-SDI4 - Rev64 14th May 2021
+      VisionHD4, VisionAV, VisionAV-HD, VisionAV-SDI,
+      VisionDVI-DL, VisionSDI2, VisionRGB-E1, VisionRGB-E1S, VisionRGB-E2, VisionRGB-E2S,
+      VisionSD4+1, VisionSD4+1S, and VisionSD8 - Rev58.0 8th May 2017
+
+   Release 7.27.1
+
+   29/03/2023 PG
+ - Add support for the VisionSC-S2 capture card (include new device firmware: DGC224FW.BIN) [F# 88916].
+   The card allows the capture of the Software Defined Video over Ethernet (SDVoE) source.
+ - VHDL Flash Versions:
+      VisionSC-S2 - Rev66 21st March 2022
+      VisionSC-UHD2 - Rev66 21st March 2022
+      VisionSC-HD4+ - Rev63 27th June 2019
+      VisionSC-DP2 - Rev64 15th May 2021
+      VisionSC-SDI4 - Rev64 14th May 2021
+      VisionHD4, VisionAV, VisionAV-HD, VisionAV-SDI,
+      VisionDVI-DL, VisionSDI2, VisionRGB-E1, VisionRGB-E1S, VisionRGB-E2, VisionRGB-E2S,
+      VisionSD4+1, VisionSD4+1S, and VisionSD8 - Rev58.0 8th May 2017

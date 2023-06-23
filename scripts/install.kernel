@@ -1,0 +1,57 @@
+#!/bin/sh
+
+################################################################
+# Datapath Limited Vision / VisionLC Linux Driver
+# install.kernel
+# Date: 19/04/2013 
+# support@datapath.co.uk
+################################################################
+
+SILENT="NO"
+VERSION="NO"
+
+usage ( )
+{
+   if [ -e install.sh ] ; then
+      install.sh -x
+      exit
+   else
+      if [ -d scripts ] ; then
+         scripts/install.sh -x
+         exit
+      fi
+   fi
+}
+
+while getopts "sv" flag ; do
+   case "$flag" in
+      s)SILENT="YES";;
+      v)VERSION="YES";;
+      *)usage;;
+   esac
+done
+
+SILENTARGS=""
+if [ "$SILENT" = "YES" ] ; then
+   SILENTARGS="-s"
+fi
+                        
+if [ -e install.sh ] ; then
+   if [ "$VERSION" = "YES" ] ; then
+      install.sh -v
+   else
+      install.sh $SILENTARGS
+   fi
+else
+   if [ -d scripts ] ; then
+      if [ "$VERSION" = "YES" ] ; then
+         scripts/install.sh -v
+      else
+         scripts/install.sh $SILENTARGS
+      fi
+   else
+      echo "Failed to execute install.sh"
+      echo "Please contact support@datapath.co.uk"
+   fi
+fi
+

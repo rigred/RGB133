@@ -1,0 +1,38 @@
+================================================================
+= Datapath Limited Vision Linux Sample Application
+= README
+= Date: 10/12/2020 
+= support@datapath.co.uk
+================================================================
+
+===== Application Architecture =====
+The software is supplied as open source and platform independent.
+
+The software utilizes Qt 5 for creating its graphical user interface and the core of the application.
+The software utilizes Video4Linux API version 2 (V4L2) for video capture and requires 
+the Datapath Limited Vision Driver module to be loaded for operation.
+
+===== Licensing =====
+For licensing information please read the LICENCE file.
+
+===== Installation =====
+The application can be installed as part of the Datapath Limited Vision Linux Driver installation.
+For manual compilation, please follow the steps:
+ # cd <install_dir>/apps/Vision
+ # qmake
+ # make
+
+===== Support =====
+For support issues (or questions) please contact support@datapath.co.uk
+
+Please include details of computer system such as motherboard type, processor type, RAM and the number
+of (and type of) Datapath Limited cards including positions in the system.
+
+Please include details of Linux kernel version, and if appropriate, OS Distribution (Ubuntu, Fedora Core,
+Red Hat Enterprise etc).
+
+Please also run the provided diagnostics harvesting script (for more details please see the DIAG file
+included with this release).
+
+ # cd <install_dir>
+ # ./scripts/diag.sh

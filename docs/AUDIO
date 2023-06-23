@@ -1,0 +1,60 @@
+================================================================
+= Datapath Limited Vision Linux Driver
+= AUDIO
+= Date: 03/05/2016
+= support@datapath.co.uk
+================================================================
+
+This document contains a basic guide to capturing audio with Datapath Limited capture cards.
+
+Datapath Limited Vision Linux Driver supports the ALSA API for audio capture.
+The user-side audio interface is the ALSA library API.
+
+===== Discovering Audio Devices =====
+
+Audio capture devices are registered as ALSA sound cards. arecord and aplay tools from package alsa-utils
+can be used to discover ALSA devices.
+
+To discover capture devices use:
+    $ arecord -l
+
+To discover playback devices use:
+    $ aplay -l
+
+===== Capturing with Third-Party Software =====
+
+The driver has been tested to work with arecord, gst-launch, ffmpeg.
+Example commands to simultaneously capture and play back the captured audio are:
+    $ arecord -D hw:<a>,<b> -f <sample_format> -r <rate> -c <num_channels> -N | aplay -D hw:<x>,<y>
+    
+    $ gst-launch alsasrc device=hw:<a>,<b> ! audio/x-raw-int,format=<sample_format>,channels=<num_channels>,rate=<rate>
+       ! alsasink device=hw:<x>,<y>
+
+    $ ffmpeg -f alsa -i hw:<a>,<b> -sample_fmt <sample_format> -ar <rate> -ac <num_channels> -f alsa hw:<x>,<y>
+
+       - Replace <a> with capture card number, <b> with capture device number,
+                 <x> with playback card number, <y> with playback device number,
+                 <sample_format> with desired sample format,
+                 <rate> with desired sample rate in Hz,
+                 <num_channels> with desired number of channels.
+                          
+*Note that a sound card for playback is needed in the system to be able to output sound.
+                          
+===== Sample Application =====
+
+Sample source is available in the utils directory which shows how to open, setup and capture audio through the ALSA library API. 
+
+To build:
+    $ cd <install_dir>/utils/
+    $ make CaptureAudio
+    
+*Note that libasound2 library is needed.    
+    
+Usage:
+    $ ./bin/CaptureAudio -h    
+ 
+To discover ALSA devices:
+    $ ./bin/CaptureAudio -l
+    
+To capture and play back with default capture and playback devices (first from the lists):
+    $ ./bin/CaptureAudio

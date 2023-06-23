@@ -1,0 +1,67 @@
+================================================================
+= Datapath Limited Vision Linux Driver
+= vlc.txt
+= Date: 25/03/2011 
+= support@datapath.co.uk
+================================================================
+
+Instructions for using VLC with the Datapath Limited capture cards.
+
+Make sure that VLC is installed in the system before continuing.
+
+== Installing VLC ==
+
+To install in Ubuntu:
+	1) Start the synaptic package manager
+	2) Search for 'vlc'
+	3) Right-click on the 'vlc' line and choose to "Mark for Installation"
+	4) Click the "Apply" button and follow synaptic installation instructions
+
+VLC has a man page which explains its function and options.
+
+	$ man vlc
+
+== Capturing ==
+	
+To start a capture using VLC (the Datapath Limited driver must already be loaded):
+	1) Start VLC
+		$ vlc
+	2) Select the "Media" drop down menu and choose "Open Capture Device"
+	3) Press the "Play" button
+	
+== Advanced VLC Options ==
+	1) Select the "Media" drop down menu and choose "Open Capture Device"
+	2) Edit the "Video device name" field to include /dev/videoN
+		Replace videoN with the desired video device.
+
+To see verbose output from VLC:
+	1) Select the "Tools" drop down menu and choose "Messages..."
+	2) Select the verbosty level (0, 1 or 2), VLC will output log/debug messages
+	   into this window.
+	   
+To change the V4L2 IO type:
+	1) Select the "Media" drop down menu and choose "Open Capture Device"
+	2) Add in the following command string
+		:v4l2-io=<io>    where <io> is 0 (READ/WRITE), 1 (MMAP) or 2 (USERPTR)
+		Note: Only READ/WRITE and MMAP are supported by the Datapath Limited driver
+		
+To change the output window pixel format:
+	1) Select the "Media" drop down menu and choose "Open Capture Device"
+	2) Add in the following command string
+		:v4l2-chroma=<chroma>
+		Options: GREY, I240, RV16, RV15, RV24, RV32, YUY2, YUYV, UYVY, I41N,
+		         I422, I420, I411, I400, MJPEG
+		Note: Not all of the above options are supported by the hardware.
+
+To change the output window resolution:
+	1) Select the "Media" drop down menu and choose "Open Capture Device"
+	2) Add in the following command string
+		:v4l2-width=<width> :v4l2-height=<height>
+	   
+To start the capture with a specific brightness:
+	1) Select the "Media" drop down menu and choose "Open Capture Device"
+	2) Add in the following command string
+		:v4l2-brightness=<value>
+	   Alternative DVI input settings: contrast 
+	   Alternative Videio input settings: contrast saturation blacklevel
+	                                      hue
